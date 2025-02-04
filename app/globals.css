@@ -2,20 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-bricolage);
+}
+
+/*** NAVIGATION ***/
+.nav-link {
+  @apply border-b border-b-transparent hover:border-b-black transition-all delay-[50ms] hover:text-gray-500;
+}
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide {
+  animation: slide 25s linear infinite;
+}
+/*** LEARN ***/
+.learn-item {
+  @apply relative flex flex-col  justify-center gap-2 w-full border-r-8 border-b-8 border-gray-200/40 bg-white shadow-lg p-6 rounded-2xl border border-gray-200 hover:scale-[1.03] transition-all duration-300;
+}
+.learn-number {
+  @apply text-center w-8 h-8 bg-yellow-200 rounded-full text-black flex items-center justify-center absolute -top-3 -left-2 rotate-6 font-bold text-xl;
+}
+.learn-text {
+  @apply font-semibold text-base md:text-lg;
 }
