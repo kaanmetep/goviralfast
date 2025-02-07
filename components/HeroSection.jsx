@@ -2,7 +2,7 @@ import Button from "./Button";
 import { Flame } from "lucide-react";
 const HeroSection = () => {
   return (
-    <div className="mt-24 flex justify-center">
+    <div className="mt-32 flex justify-center">
       <div className="max-w-[600px]">
         <div className="mb-2 flex items-center bg-gray-100 w-fit mx-auto px-3 rounded-lg py-[2px] text-gray-700 gap-1">
           <Flame className="size-4 md:size-6" />

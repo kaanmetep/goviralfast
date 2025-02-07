@@ -15,7 +15,7 @@ const bric = Bricolage_Grotesque({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${bric.variable}  py-6 bg-gray-50 `}>{children}</body>
+      <body className={`${bric.variable}  bg-gray-50 `}>{children}</body>
     </html>
   );
 }
