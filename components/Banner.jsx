@@ -8,6 +8,7 @@ const Banner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const bannerRef = useRef(null);
+  const [bannerSize, setBannerSize] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,6 +22,9 @@ const Banner = () => {
 
     if (bannerRef.current) {
       observer.observe(bannerRef.current);
+      // Banner boyutlarını kaydet
+      const { width, height } = bannerRef.current.getBoundingClientRect();
+      setBannerSize({ width, height });
     }
 
     return () => {
@@ -43,7 +47,6 @@ const Banner = () => {
       const progress = timestamp - startTime;
 
       if (progress < fastDuration) {
-        // 0 - 999.990
         const progressRatio = progress / fastDuration;
         const easeOutQuad = (t) => t * (2 - t);
         const currentCount = Math.floor(
@@ -52,7 +55,6 @@ const Banner = () => {
         setCount(currentCount);
         animationFrame = requestAnimationFrame(updateCount);
       } else if (progress < fastDuration + slowDuration) {
-        // 999.990 - 1.000.000
         const slowProgress = (progress - fastDuration) / slowDuration;
         const easeOutQuad = (t) => t * (2 - t);
         const currentCount = Math.floor(
@@ -63,7 +65,6 @@ const Banner = () => {
         animationFrame = requestAnimationFrame(updateCount);
       } else {
         setCount(endValueSlow);
-
         setShowConfetti(true);
         setTimeout(() => setShowConfetti(false), 5000);
       }
@@ -83,7 +84,7 @@ const Banner = () => {
   return (
     <div
       ref={bannerRef}
-      className="flex justify-center items-center bg-gradient-to-r from-white to-yellow-50 py-12 px-6 rounded-lg shadow-lg my-12 max-w-[1500px] mx-auto"
+      className="relative flex justify-center items-center bg-gradient-to-r from-white to-yellow-50 py-12 px-6 rounded-lg shadow-lg my-12 max-w-[1500px] mx-auto"
     >
       <div className="text-center">
         <h2 className="text-center text-gray-400 font-semibold text-lg xs:text-xl sm:text-2xl md:text-3xl w-full sm:w-4/5 md:w-2/3 lg:w-1/2 mx-auto">
@@ -102,28 +103,15 @@ const Banner = () => {
       </div>
 
       {showConfetti && (
-        <>
-          {showConfetti && (
-            <div
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                zIndex: 9999,
-              }}
-            >
-              <Confetti
-                width={window.innerWidth}
-                height={window.innerHeight}
-                recycle={false}
-                numberOfPieces={500}
-                gravity={0.2}
-              />
-            </div>
-          )}
-        </>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <Confetti
+            width={bannerSize.width}
+            height={bannerSize.height}
+            recycle={false}
+            numberOfPieces={500}
+            gravity={0.2}
+          />
+        </div>
       )}
     </div>
   );

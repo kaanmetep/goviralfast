@@ -10,10 +10,6 @@ body {
   font-family: var(--font-bricolage);
 }
 
-/*** NAVIGATION ***/
-.nav-link {
-  @apply border-b border-b-transparent hover:border-b-black transition-all delay-[50ms] hover:text-gray-500;
-}
 @keyframes slide {
   0% {
     transform: translateX(0);
@@ -37,6 +33,10 @@ body {
 .animate-slide {
   animation: slide 25s linear infinite;
 }
+/*** RE-USABLES ***/
+.button {
+  @apply flex items-center gap-2 bg-yellow-400 text-black px-4 md:px-12 font-bold rounded-md py-2 md:py-3 hover:bg-yellow-400/80 transition-all delay-[50ms] text-xs md:text-base;
+}
 /*** LEARN ***/
 .learn-item {
   @apply relative flex flex-col  justify-center gap-2 w-full border-r-8 border-b-8 border-gray-200/40 bg-white shadow-lg p-6 rounded-2xl border border-gray-200 hover:scale-[1.03] transition-all duration-300;
@@ -46,4 +46,8 @@ body {
 }
 .learn-text {
   @apply font-semibold text-base md:text-lg;
+}
+/*** NAVIGATION ***/
+.nav-link {
+  @apply border-b border-b-transparent hover:border-b-black transition-all delay-[50ms] hover:text-gray-500;
 }
