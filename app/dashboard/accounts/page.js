@@ -26,7 +26,7 @@ const SOCIAL_ACCOUNTS = [
 
 const Page = () => {
   return (
-    <div className="py-6 px-4 mr-2 bg-white shadow-lg w-full rounded-md">
+    <div className="py-6 px-4 mr-2 bg-white shadow-lg w-full rounded-md min-h-screen">
       {/* Header Section */}
       <h2 className="text-2xl font-semibold">Connected Accounts</h2>
       <p className="text-gray-600 mt-2">
@@ -34,7 +34,7 @@ const Page = () => {
       </p>
 
       {/* Accounts List */}
-      <ul className="flex flex-col gap-8 w-full my-16">
+      <ul className="flex flex-col gap-8 w-full my-12">
         {SOCIAL_ACCOUNTS.map((account) => {
           const Icon = account.icon;
           return (
@@ -45,7 +45,7 @@ const Page = () => {
               <div className="flex gap-4 w-full sm:w-auto">
                 <Icon size={38} className={account.iconColor} />
                 <div className="flex-1">
-                  <button className="bg-slate-700 hover:bg-slate-800 transition-colors text-white px-8 py-2 rounded-md font-medium w-[240px]">
+                  <button className="bg-zinc-600 hover:bg-zinc-700 transition-colors text-white px-8 py-2 rounded-md font-medium w-[240px]">
                     {account.buttonText}
                   </button>
                   <p className="text-sm text-gray-500 mt-1">Not connected</p>

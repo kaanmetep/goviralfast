@@ -82,10 +82,10 @@ const ViralVideo = ({ video }) => {
           {/* Video */}
           <video
             id={`video-${video.id}`}
-            className="w-full max-w-[230px] rounded-t-lg cursor-pointer "
+            className="w-full  rounded-t-lg cursor-pointer "
             onClick={togglePlayPause}
           >
-            <source src={video.src} type="video/mp4" />
+            <source src={video.link} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
 
@@ -110,7 +110,7 @@ const ViralVideo = ({ video }) => {
 
         {/* Video Info Section */}
         <div className="p-4 border-t border-amber-200">
-          <h3 className="text-lg font-semibold text-amber-900 truncate">
+          <h3 className=" font-semibold text-amber-900 truncate">
             {video.title || "Untitled Video"}
           </h3>
           {video.description && (

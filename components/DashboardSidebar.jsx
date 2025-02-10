@@ -6,7 +6,7 @@ import { Home } from "lucide-react";
 import Link from "next/link";
 const DashboardSidebar = () => {
   return (
-    <div className="flex flex-col bg-white p-4 shadow-xl border-r-2 border-gray-200 md:h-screen shrink-0">
+    <div className="relative top-0 left-0 md:w-[330px] md:fixed flex flex-col bg-white p-4 shadow-xl border-r-2 border-gray-200 md:h-screen shrink-0">
       <div className="flex  justify-between items-center md:block">
         <Link href={"/dashboard"}>
           <div className="flex items-center gap-1 ">
