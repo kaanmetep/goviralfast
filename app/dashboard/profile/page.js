@@ -1,12 +1,15 @@
 import React from "react";
 import { FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
-const ProfilePage = () => {
+import { auth } from "@/auth";
+const ProfilePage = async () => {
+  const session = await auth();
+
   const userProfile = {
-    name: "Kaan Peksen",
+    name: session.user.name,
     planType: "Monthly Plan",
-    email: "kaan@example.com",
-    profileImage: "/api/placeholder/120/120",
+    email: session.user.email,
+    profileImage: session.user.image,
     subscriptionDaysLeft: 18,
     stats: {
       totalVideos: 24,

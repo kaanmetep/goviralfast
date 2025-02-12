@@ -1,5 +1,6 @@
 import DashboardMain from "@/components/DashboardMain";
 import { createClient } from "@/utils/supabase/server";
+
 const Page = async () => {
   const supabase = createClient();
 

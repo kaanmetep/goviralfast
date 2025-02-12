@@ -7,11 +7,14 @@ import Video from "@/components/Video";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
 import Banner from "@/components/Banner";
-export default function Home() {
+import { auth } from "@/auth";
+export default async function Home() {
+  const session = await auth();
+
   return (
     <div>
       <div className="flex flex-col mx-auto w-[95%]  md:w-[90%] max-w-[1500px]">
-        <Header />
+        <Header session={session} />
         <main>
           <HeroSection />
           <div className="w-full  flex justify-center">

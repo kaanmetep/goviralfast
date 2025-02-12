@@ -4,7 +4,8 @@ import DashboardSidebarProfile from "./DashboardSidebarProfile";
 import { Rocket } from "lucide-react";
 import { Home } from "lucide-react";
 import Link from "next/link";
-const DashboardSidebar = () => {
+
+const DashboardSidebar = async () => {
   return (
     <div className="relative top-0 left-0 md:w-[330px] md:fixed flex flex-col bg-white p-4 shadow-xl border-r-2 border-gray-200 md:h-screen shrink-0">
       <div className="flex  justify-between items-center md:block">

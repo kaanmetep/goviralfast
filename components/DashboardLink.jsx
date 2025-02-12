@@ -8,7 +8,7 @@ const DashboardLink = ({ href = "", children }) => {
   return (
     <Link
       href={href}
-      className={`flex items-center gap-1 p-2 rounded-md ${
+      className={` flex items-center gap-1 p-2 rounded-md ${
         pathname === href ? "bg-gray-100 transition-all delay-[50ms]" : ""
       }`}
     >

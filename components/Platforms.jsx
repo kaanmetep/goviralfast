@@ -1,4 +1,4 @@
-import { Instagram, Youtube, Music2 } from "lucide-react";
+import { FaTiktok, FaInstagram, FaYoutube } from "react-icons/fa";
 
 const Platforms = () => {
   return (
@@ -21,13 +21,16 @@ const Platforms = () => {
           >
             <div className="p-4 bg-gray-100 rounded-full group-hover:bg-gray-200 transition-all">
               {item === "TikTok" && (
-                <Music2 className="text-gray-800 size-7 md:size-9" />
+                <FaTiktok className="text-gray-800 size-7 md:size-9" />
               )}
               {item === "Youtube" && (
-                <Youtube size={36} className="text-gray-800 size-7 md:size-9" />
+                <FaYoutube
+                  size={36}
+                  className="text-gray-800 size-7 md:size-9"
+                />
               )}
               {item === "Instagram" && (
-                <Instagram
+                <FaInstagram
                   size={36}
                   className="text-gray-800 size-7 md:size-9"
                 />

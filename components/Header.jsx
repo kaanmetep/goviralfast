@@ -3,9 +3,10 @@ import { Rocket } from "lucide-react";
 import Navigation from "./Navigation";
 import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
-import { Instagram } from "lucide-react";
-
-const Header = () => {
+import { FaGoogle } from "react-icons/fa";
+import { signInAction } from "@/actions";
+import Link from "next/link";
+const Header = ({ session }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +34,7 @@ const Header = () => {
         <h1 className="sm:text-lg md:text-xl font-semibold">GoViralFast</h1>
       </div>
 
-      <Navigation isScrolled={isScrolled} />
+      <Navigation isScrolled={isScrolled} session={session} />
       <div className="block md:hidden ml-auto  group relative ">
         <Menu className="cursor-pointer" />
         <div className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto top-6 right-0 absolute bg-white shadow-lg rounded-lg transition-all duration-200 border border-gray-300 px-">
@@ -55,14 +56,19 @@ const Header = () => {
                   Learn
                 </a>
               </li>
-              <li className="cursor-pointer bg-blue-400 text-white font-semibold rounded-lg gap-2 px-2 py-2 transition-all duration-150 text-center hover:bg-blue-500 flex items-center">
-                <Instagram className="size-4" />
-                <a
-                  href="#login"
-                  className="block   text-center whitespace-nowrap text-sm"
-                >
-                  Login with Google
-                </a>
+              <li className="cursor-pointer bg-blue-400 text-white font-semibold rounded-lg gap-2 px-2 py-2 transition-all duration-150 text-center hover:bg-blue-500 ">
+                <form action={signInAction}>
+                  {session ? (
+                    <Link href={"/dashboard"}>Dashboard</Link>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <FaGoogle className="size-4" />{" "}
+                      <button className="block text-center whitespace-nowrap text-sm">
+                        Login with Google
+                      </button>
+                    </div>
+                  )}
+                </form>
               </li>
             </ul>
           </nav>
