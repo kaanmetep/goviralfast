@@ -1,5 +1,7 @@
 import { FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
-
+import { createClient } from "@/utils/supabase/server";
+import { auth } from "@/auth";
+import { X } from "lucide-react";
 const SOCIAL_ACCOUNTS = [
   {
     id: 1,
@@ -24,7 +26,15 @@ const SOCIAL_ACCOUNTS = [
   },
 ];
 
-const Page = () => {
+const Page = async () => {
+  const supabase = createClient();
+  const session = await auth();
+  const { data: user } = await supabase
+    .from("users")
+    .select()
+    .eq("email", session.user.email)
+    .single();
+  console.log(user);
   return (
     <div className="py-6 px-4 mr-2 bg-white shadow-lg w-full rounded-md min-h-screen">
       {/* Header Section */}
@@ -40,7 +50,7 @@ const Page = () => {
           return (
             <li
               key={account.id}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full"
+              className="flex flex-col sm:flex-row sm:items-center gap-4 w-full"
             >
               <div className="flex gap-4 w-full sm:w-auto">
                 <Icon size={38} className={account.iconColor} />
@@ -48,9 +58,29 @@ const Page = () => {
                   <button className="bg-zinc-600 hover:bg-zinc-700 transition-colors text-white px-8 py-2 rounded-md font-medium w-[240px]">
                     {account.buttonText}
                   </button>
-                  <p className="text-sm text-gray-500 mt-1">Not connected</p>
+                  {user?.[account?.name?.toLowerCase() + "_connected_accounts"]
+                    .length === 0 && (
+                    <p className="text-sm text-gray-500 mt-1">Not connected</p>
+                  )}
                 </div>
               </div>
+              <ul className="flex gap-2">
+                {user?.[
+                  account?.name?.toLowerCase() + "_connected_accounts"
+                ].map((account, i) => (
+                  <li
+                    key={i}
+                    className="bg-gray-100 px-2 py-1 rounded-md flex gap-1 items-center relative"
+                  >
+                    <Icon size={16} className={account.iconColor} />
+                    <span> {account}</span>
+                    <X
+                      size={12}
+                      className="absolute -top-1 -right-1 bg-gray-300 rounded-full  flex items-center justify-center cursor-pointer w-3 h-3 p-0.5"
+                    />
+                  </li>
+                ))}
+              </ul>
             </li>
           );
         })}

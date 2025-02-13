@@ -10,11 +10,33 @@ const VideoEditPage = ({ video }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [videoWidth, setVideoWidth] = useState(0);
   const [videoHeight, setVideoHeight] = useState(0);
-  const [audioSource, setAudioSource] = useState("original");
-  const [textOverlay, setTextOverlay] = useState("");
-  const [textPosition, setTextPosition] = useState("center");
-  const [textColor, setTextColor] = useState("#FFFFFF");
-  const [fontSize, setFontSize] = useState("24");
+
+  const [editSettings, setEditSettings] = useState({
+    audioSource: "original",
+    textOverlay: {
+      text: "",
+      position: "center",
+      color: "#FFFFFF",
+      fontSize: "16",
+    },
+  });
+  console.log(editSettings);
+  const updateEditSettings = (path, value) => {
+    setEditSettings((prev) => {
+      const newSettings = { ...prev };
+      if (path.includes(".")) {
+        const [parent, child] = path.split(".");
+        newSettings[parent] = {
+          ...newSettings[parent],
+          [child]: value,
+        };
+      } else {
+        newSettings[path] = value;
+      }
+      return newSettings;
+    });
+  };
+
   const togglePlayPause = () => {
     const videoElement = document.getElementById(`video-${video.id}`);
     if (videoElement.paused) {
@@ -78,28 +100,50 @@ const VideoEditPage = ({ video }) => {
     <div
       className={`bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg overflow-hidden w-fit flex ${
         videoWidth > videoHeight ? "flex-col" : "flex-col sm:flex-row sm:gap-1"
-      }  `}
+      }`}
     >
       {/* Video */}
       <div>
         <div
-          className="relative group hover:scale-105 transition-all delay-[50ms]"
+          className="relative group "
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Video */}
-          <video
-            id={`video-${video.id}`}
-            className="rounded-t-lg cursor-pointer max-w-[600px] max-h-[600px] w-full h-auto"
-            onClick={togglePlayPause}
-          >
-            <source src={video.link} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <div className="relative">
+            <video
+              id={`video-${video.id}`}
+              className="rounded-t-lg cursor-pointer max-w-[600px] max-h-[600px] w-full h-auto"
+              onClick={togglePlayPause}
+            >
+              <source src={video.link} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {editSettings.textOverlay.text && (
+              <span
+                className="absolute text-white  w-[215px] break-words font-medium  "
+                style={{
+                  color: editSettings.textOverlay.color,
+                  fontSize: `${editSettings.textOverlay.fontSize}px`,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  ...(editSettings.textOverlay.position === "center"
+                    ? {
+                        top: "50%",
+                        transform: "translate(-50%, -50%)",
+                      }
+                    : {
+                        [editSettings.textOverlay.position]: "8px",
+                        transform: "translateX(-50%)",
+                      }),
+                }}
+              >
+                {editSettings.textOverlay.text}
+              </span>
+            )}
+          </div>
 
-          {/* Play/Pause Button */}
           <button
-            className="opacity-0 pointer-events-none  absolute group-hover:opacity-100 group-hover:pointer-events-auto inset-0 flex items-center justify-center w-full h-full text-white bg-black bg-opacity-40 transition-all delay-[50ms]"
+            className="opacity-0 pointer-events-none absolute group-hover:opacity-100 group-hover:pointer-events-auto inset-0 flex items-center justify-center w-full h-full text-white bg-black bg-opacity-40 transition-all delay-[50ms]"
             onClick={togglePlayPause}
           >
             {isPlaying ? (
@@ -109,16 +153,14 @@ const VideoEditPage = ({ video }) => {
             )}
           </button>
 
-          {/* Time Indicator */}
           <div className="absolute bottom-3 right-3 bg-black bg-opacity-50 text-white text-sm px-2 py-1 rounded">
             {formatTime(currentTime)} /{" "}
             {isMetadataLoaded ? formatTime(duration) : "00:00"}
           </div>
         </div>
 
-        {/* Video Info Section */}
         <div className="p-4 border-t border-amber-200">
-          <h3 className=" font-semibold text-amber-900 truncate">
+          <h3 className="font-semibold text-amber-900 truncate">
             {video.title || "Untitled Video"}
           </h3>
           {video.description && (
@@ -150,8 +192,10 @@ const VideoEditPage = ({ video }) => {
                   type="radio"
                   name="audioSource"
                   value="original"
-                  checked={audioSource === "original"}
-                  onChange={(e) => setAudioSource(e.target.value)}
+                  checked={editSettings.audioSource === "original"}
+                  onChange={(e) =>
+                    updateEditSettings("audioSource", e.target.value)
+                  }
                   className="w-4 h-4 appearance-none rounded-full border-2 border-amber-300 checked:border-amber-600 checked:bg-amber-600 checked:border-4 focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 focus:outline-none cursor-pointer transition-colors"
                 />
                 <span className="text-sm text-amber-700 select-none">
@@ -163,8 +207,10 @@ const VideoEditPage = ({ video }) => {
                   type="radio"
                   name="audioSource"
                   value="new"
-                  checked={audioSource === "new"}
-                  onChange={(e) => setAudioSource(e.target.value)}
+                  checked={editSettings.audioSource === "new"}
+                  onChange={(e) =>
+                    updateEditSettings("audioSource", e.target.value)
+                  }
                   className="w-4 h-4 appearance-none rounded-full border-2 border-amber-300 checked:border-amber-600 checked:bg-amber-600 checked:border-4 focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 focus:outline-none cursor-pointer transition-colors"
                 />
                 <span className="text-sm text-amber-700 select-none">
@@ -174,8 +220,7 @@ const VideoEditPage = ({ video }) => {
             </div>
           </div>
 
-          {/* Audio Upload Section - Conditional Rendering */}
-          {audioSource === "new" && (
+          {editSettings.audioSource === "new" && (
             <div className="space-y-2">
               <label className="block text-sm font-medium text-amber-700">
                 Audio File
@@ -218,15 +263,17 @@ const VideoEditPage = ({ video }) => {
             </div>
           )}
 
-          {/* Add text on video */}
+          {/* Text Overlay Settings */}
           <div className="space-y-3">
             <label className="block text-sm font-medium text-amber-700">
               Text Overlay
             </label>
             <input
               type="text"
-              value={textOverlay}
-              onChange={(e) => setTextOverlay(e.target.value)}
+              value={editSettings.textOverlay.text}
+              onChange={(e) =>
+                updateEditSettings("textOverlay.text", e.target.value)
+              }
               placeholder="Enter text to display on video"
               className="w-full px-3 py-2 border border-amber-300 rounded-md focus:outline-none focus:ring-1 focus:ring-amber-500"
             />
@@ -237,8 +284,10 @@ const VideoEditPage = ({ video }) => {
                   Position
                 </label>
                 <select
-                  value={textPosition}
-                  onChange={(e) => setTextPosition(e.target.value)}
+                  value={editSettings.textOverlay.position}
+                  onChange={(e) =>
+                    updateEditSettings("textOverlay.position", e.target.value)
+                  }
                   className="w-full px-3 py-2 border border-amber-300 rounded-md focus:outline-none focus:ring-1 focus:ring-amber-500"
                 >
                   <option value="top">Top</option>
@@ -252,14 +301,16 @@ const VideoEditPage = ({ video }) => {
                   Font Size
                 </label>
                 <select
-                  value={fontSize}
-                  onChange={(e) => setFontSize(e.target.value)}
+                  value={editSettings.textOverlay.fontSize}
+                  onChange={(e) =>
+                    updateEditSettings("textOverlay.fontSize", e.target.value)
+                  }
                   className="w-full px-3 py-2 border border-amber-300 rounded-md focus:outline-none focus:ring-1 focus:ring-amber-500"
                 >
                   <option value="16">Small</option>
-                  <option value="24">Medium</option>
-                  <option value="32">Large</option>
-                  <option value="48">Extra Large</option>
+                  <option value="20">Medium</option>
+                  <option value="24">Large</option>
+                  <option value="28">Extra Large</option>
                 </select>
               </div>
             </div>
@@ -271,14 +322,18 @@ const VideoEditPage = ({ video }) => {
               <div className="flex gap-2">
                 <input
                   type="color"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
+                  value={editSettings.textOverlay.color}
+                  onChange={(e) =>
+                    updateEditSettings("textOverlay.color", e.target.value)
+                  }
                   className="h-10 w-10 border border-amber-300 rounded cursor-pointer"
                 />
                 <input
                   type="text"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
+                  value={editSettings.textOverlay.color}
+                  onChange={(e) =>
+                    updateEditSettings("textOverlay.color", e.target.value)
+                  }
                   placeholder="#FFFFFF"
                   className="flex-1 px-3 py-2 border border-amber-300 rounded-md focus:outline-none focus:ring-1 focus:ring-amber-500"
                 />

@@ -4,21 +4,20 @@ import Link from "next/link";
 import { auth } from "@/auth";
 const ProfilePage = async () => {
   const session = await auth();
-
+  console.log(session);
   const userProfile = {
     name: session.user.name,
-    planType: "Monthly Plan",
+    planType: session?.user.userData[0].is_premium
+      ? "Monthly Plan"
+      : "Free Plan",
     email: session.user.email,
     profileImage: session.user.image,
     subscriptionDaysLeft: 18,
-    stats: {
-      totalVideos: 24,
-    },
-    connectedPlatforms: {
-      instagram: true,
-      tiktok: false,
-      youtube: true,
-    },
+
+    instagramAmount:
+      session?.user.userData[0].instagram_connected_accounts.length,
+    tiktokAmount: session?.user.userData[0].tiktok_connected_accounts.length,
+    youtubeAmount: session?.user.userData[0].youtube_connected_accounts.length,
   };
 
   return (
@@ -38,7 +37,13 @@ const ProfilePage = async () => {
               <h1 className="text-2xl font-semibold text-gray-900">
                 {userProfile.name}
               </h1>
-              <span className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full">
+              <span
+                className={`px-3 py-1 text-sm rounded-full font-medium ${
+                  userProfile.planType === "Monthly Plan"
+                    ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
                 {userProfile.planType}
               </span>
             </div>
@@ -73,21 +78,39 @@ const ProfilePage = async () => {
               <FaInstagram className="w-6 h-6 text-pink-600" />
               <span className="font-medium">Instagram</span>
             </div>
-            <span className="text-green-600 text-sm">3 Accounts Connected</span>
+            {userProfile.instagramAmount > 0 ? (
+              <span className="text-green-600 text-sm">
+                {userProfile.instagramAmount} Accounts Connected
+              </span>
+            ) : (
+              <span className="text-gray-500 text-sm">Not Connected</span>
+            )}
           </div>
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div className="flex items-center gap-3">
               <FaYoutube className="w-6 h-6 text-red-600" />
               <span className="font-medium">YouTube</span>
             </div>
-            <span className="text-green-600 text-sm">2 Accounts Connected</span>
+            {userProfile.youtubeAmount > 0 ? (
+              <span className="text-green-600 text-sm">
+                {userProfile.youtubeAmount} Accounts Connected
+              </span>
+            ) : (
+              <span className="text-gray-500 text-sm">Not Connected</span>
+            )}
           </div>
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div className="flex items-center gap-3">
               <FaTiktok className="w-6 h-6 text-gray-600" />
               <span className="font-medium">TikTok</span>
             </div>
-            <span className="text-gray-500 text-sm">Not Connected</span>
+            {userProfile.tiktokAmount > 0 ? (
+              <span className="text-green-600 text-sm">
+                {userProfile.tiktokAmount} Accounts Connected
+              </span>
+            ) : (
+              <span className="text-gray-500 text-sm">Not Connected</span>
+            )}
           </div>
         </div>
       </div>
