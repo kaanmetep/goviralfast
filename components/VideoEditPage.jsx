@@ -12,6 +12,7 @@ const VideoEditPage = ({ video }) => {
   const [videoWidth, setVideoWidth] = useState(0);
   const [videoHeight, setVideoHeight] = useState(0);
   const videoType = videoWidth > videoHeight ? "wideVideo" : "tallVideo";
+  console.log(videoType);
   const [editSettings, setEditSettings] = useState({
     audioSource: "original",
     textOverlay: {

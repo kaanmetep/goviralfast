@@ -1,4 +1,5 @@
 import { Edit } from "lucide-react";
+import VideoDownloadButton from "./VideoDownloadButton";
 const VideoEditSettings = ({
   editSettings,
   updateEditSettings,
@@ -6,7 +7,7 @@ const VideoEditSettings = ({
   videoType,
 }) => {
   const modifyUrl = (url, editSettings) => {
-    const { textOverlay, videoType } = editSettings;
+    const { textOverlay } = editSettings;
     if (!textOverlay || !textOverlay.text) return url;
 
     const baseUrl = url.split("/upload/");
@@ -17,7 +18,7 @@ const VideoEditSettings = ({
 
     const colorHex = textOverlay.color.replace("#", "");
     const fontSize = textOverlay.fontSize;
-    // let width = videoType === "tallVideo" ? "400" : "800"; // Video için daha uygun genişlik // TODO. check this
+    const width = videoType === "tallVideo" ? "850" : "1700";
 
     let gravity = "north";
     let yOffset = ",y_50";
@@ -30,11 +31,27 @@ const VideoEditSettings = ({
     }
 
     // Cloudinary otomatik satır bölme için w_ parametresi kullanılır
-    const transformation = `w_800,c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset}`;
-
+    const transformation = `w_${width},c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset}`;
+    const handleDownload = async () => {
+      try {
+        const response = await fetch(modifyUrl(link, editSettings)); // Cloudinary linkini al
+        const blob = await response.blob(); // Binary veri olarak indir
+        const url = window.URL.createObjectURL(blob); // Tarayıcıda bir URL oluştur
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "video.mp4";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Video indirilemedi:", error);
+      }
+    };
     return `${baseUrl[0]}/upload/${transformation}/${baseUrl[1]}`;
   };
-  console.log(modifyUrl(link, editSettings));
+  const editedVideoLink = modifyUrl(link, editSettings);
+
   return (
     <div className="p-4 border-t border-amber-200 space-y-4">
       <div className="flex items-center justify-between">
@@ -208,17 +225,12 @@ const VideoEditSettings = ({
 
         {/* Action Buttons */}
         <div className="flex gap-3 pt-2">
-          <button
-            type="button"
-            className="flex-1 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-amber-300 rounded-md hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
-          >
-            Download Video
-          </button>
+          <VideoDownloadButton link={editedVideoLink} />
+
           <div className="relative ">
             <button
               type="button"
               className="flex-1 px-4 py-2 text-sm font-medium text-white bg-amber-800 border border-transparent rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 blur-[1px]"
-              disabled
             >
               Share Instantly
             </button>
