@@ -1,4 +1,4 @@
-const Video = () => {
+const VideoSection = () => {
   return (
     <div className="mt-20">
       <div className="flex justify-center">
@@ -31,4 +31,4 @@ const Video = () => {
   );
 };
 
-export default Video;
+export default VideoSection;

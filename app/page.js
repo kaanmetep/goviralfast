@@ -3,7 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import Slider from "@/components/Slider";
 import Learn from "@/components/Learn";
 import Platforms from "@/components/Platforms";
-import Video from "@/components/Video";
+import VideoSection from "@/components/VideoSection";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
 import Banner from "@/components/Banner";
@@ -22,7 +22,7 @@ export default async function Home() {
           </div>
           <Learn />
           <Platforms />
-          <Video />
+          <VideoSection />
         </main>
       </div>
       <Pricing />

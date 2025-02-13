@@ -44,11 +44,14 @@ const DashboardMain = ({ videos }) => {
           className="flex gap-6"
           columnClassName="masonry-column"
         >
-          {videos.map((video) => (
-            <div key={video.id} className="mb-4  rounded-lg overflow-hidden">
-              <ViralVideo video={video} />
-            </div>
-          ))}
+          {videos
+            .slice() // Orijinal diziyi korumak için kopyasını al
+            .sort((a, b) => a.id - b.id) // id'ye göre ters sırala (büyükten küçüğe)
+            .map((video) => (
+              <div key={video.id} className="mb-4 rounded-lg overflow-hidden">
+                <ViralVideo video={video} />
+              </div>
+            ))}
         </Masonry>
       </div>
     </div>
