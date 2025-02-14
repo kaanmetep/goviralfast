@@ -16,14 +16,17 @@ const DashboardSidebarConfiguration = () => {
             <p>Profile</p>
           </DashboardLink>
         </li>
-        <li className="text-gray-600 text-sm  cursor-pointer ">
+        <li className="text-gray-600 text-sm  cursor-pointer relative ">
           <DashboardLink
             href={"/dashboard/accounts"}
             className="flex items-center gap-1"
           >
             <Users className="size-5" />
-            <p>Connected Accounts</p>
+            <p className="blur-[1px]">Connected Accounts</p>
           </DashboardLink>
+          <span className="text-white bg-black px-2 rounded-md text-xs absolute -right-2 -top-1">
+            coming soon!
+          </span>
         </li>
       </ul>
     </div>
