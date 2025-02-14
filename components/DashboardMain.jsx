@@ -45,7 +45,11 @@ const DashboardMain = ({ videos }) => {
         >
           {videos
             .slice() // Orijinal diziyi korumak için kopyasını al
-            .sort((a, b) => a.id - b.id)
+            .sort((a, b) =>
+              sortOption === "mostpopular"
+                ? b.popularity - a.popularity
+                : b.id - a.id
+            )
             .map((video) => (
               <div key={video.id} className="mb-4 rounded-lg overflow-hidden">
                 <ViralVideo video={video} />

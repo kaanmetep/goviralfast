@@ -1,6 +1,5 @@
-import DashboardSidebarConfiguration from "./DashboardSidebarConfiguration";
-import DashboardSidebarHome from "./DashboardSidebarHome";
 import DashboardSidebarProfile from "./DashboardSidebarProfile";
+import DashboardSidebarHideable from "./DashboardSidebarHideable";
 import { Rocket } from "lucide-react";
 import { Home } from "lucide-react";
 import Link from "next/link";
@@ -23,10 +22,7 @@ const DashboardSidebar = async () => {
       <hr className="w-full h-[2px] bg-gray-300 mt-2 md:mt-6" />
       <div className="relative h-full md:justify-between md:flex md:flex-col">
         <div className="flex flex-col gap-2 md:gap-3 mt-2 md:mt-3 ">
-          <DashboardSidebarHome />
-          <hr className=" md:block w-full h-[2px] bg-gray-300 " />
-          <DashboardSidebarConfiguration />
-          <hr className=" md:block w-full h-[2px] bg-gray-300" />
+          <DashboardSidebarHideable />
           <DashboardSidebarProfile />
         </div>
 

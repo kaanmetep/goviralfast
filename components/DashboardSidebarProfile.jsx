@@ -4,8 +4,8 @@ import { auth } from "@/auth";
 const DashboardSidebarProfile = async () => {
   const session = await auth();
   return (
-    <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-end  justify-between">
-      <Link href={"/dashboard/profile"}>
+    <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-end  justify-between ">
+      <Link href={"/dashboard/profile"} className="w-fit">
         <div className=" flex items-center gap-2 cursor-pointer ">
           <img
             src={session.user.image}
