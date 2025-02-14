@@ -8,7 +8,6 @@ const Page = async ({ params }) => {
     .select("*")
     .eq("id", params.id)
     .single();
-  console.log(video);
   return (
     <div className="w-full bg-white shadow-lg pt-2 mr-2  px-2 rounded-md min-h-screen ">
       <VideoEditPage video={video} />

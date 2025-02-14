@@ -2,14 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { Play, Pause, Edit } from "lucide-react";
 import Link from "next/link";
-
+import { formatTime } from "@/utils/helpers";
 const ViralVideo = ({ video }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isMetadataLoaded, setIsMetadataLoaded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
   const togglePlayPause = () => {
     const videoElement = document.getElementById(`video-${video.id}`);
     if (videoElement.paused) {
@@ -20,16 +18,6 @@ const ViralVideo = ({ video }) => {
       setIsPlaying(false);
     }
   };
-
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-  };
-
   useEffect(() => {
     const videoElement = document.getElementById(`video-${video.id}`);
     const updateTime = () => {
@@ -63,11 +51,7 @@ const ViralVideo = ({ video }) => {
   return (
     <div>
       <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg overflow-hidden">
-        <div
-          className="relative group hover:scale-105 transition-all delay-[50ms]"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+        <div className="relative group hover:scale-[1.02] transition-all delay-[50ms]">
           {/* Edit Icon */}
           <Link
             href={`/dashboard/videos/${video.id}`}
@@ -113,11 +97,6 @@ const ViralVideo = ({ video }) => {
           <h3 className=" font-semibold text-amber-900 truncate">
             {video.title || "Untitled Video"}
           </h3>
-          {video.description && (
-            <p className="mt-1 text-sm text-amber-700 line-clamp-2">
-              {video.description}
-            </p>
-          )}
         </div>
       </div>
     </div>

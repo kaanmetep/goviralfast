@@ -5,7 +5,6 @@ import { useState } from "react";
 
 const DashboardMain = ({ videos }) => {
   const [sortOption, setSortOption] = useState("recentlyadded");
-
   // Responsive sütun ayarları
   const breakpointColumns = {
     default: 3, // Başlangıçta 4 sütun
@@ -46,7 +45,7 @@ const DashboardMain = ({ videos }) => {
         >
           {videos
             .slice() // Orijinal diziyi korumak için kopyasını al
-            .sort((a, b) => a.id - b.id) // id'ye göre ters sırala (büyükten küçüğe)
+            .sort((a, b) => a.id - b.id)
             .map((video) => (
               <div key={video.id} className="mb-4 rounded-lg overflow-hidden">
                 <ViralVideo video={video} />

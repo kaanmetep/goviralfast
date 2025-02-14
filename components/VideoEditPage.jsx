@@ -2,16 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { Play, Pause } from "lucide-react";
 import VideoEditSettings from "./VideoEditSettings";
-
+import { formatTime } from "@/utils/helpers";
 const VideoEditPage = ({ video }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isMetadataLoaded, setIsMetadataLoaded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const [videoWidth, setVideoWidth] = useState(0);
   const [videoHeight, setVideoHeight] = useState(0);
-  const videoType = videoWidth > videoHeight ? "wideVideo" : "tallVideo";
   const [editSettings, setEditSettings] = useState({
     audioSource: "original",
     textOverlay: {
@@ -22,6 +20,7 @@ const VideoEditPage = ({ video }) => {
       fontSize: "48",
     },
   });
+  const videoType = videoWidth > videoHeight ? "wideVideo" : "tallVideo";
   const updateEditSettings = (path, value) => {
     setEditSettings((prev) => {
       const newSettings = { ...prev };
@@ -47,15 +46,6 @@ const VideoEditPage = ({ video }) => {
       videoElement.pause();
       setIsPlaying(false);
     }
-  };
-
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
   };
 
   useEffect(() => {
@@ -105,11 +95,7 @@ const VideoEditPage = ({ video }) => {
     >
       {/* Video */}
       <div>
-        <div
-          className="relative group "
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+        <div className="relative group ">
           <div className="relative">
             <video
               id={`video-${video.id}`}

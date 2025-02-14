@@ -1,44 +1,13 @@
 import { Edit } from "lucide-react";
 import VideoDownloadButton from "./VideoDownloadButton";
+import { modifyUrl } from "@/utils/helpers";
 const VideoEditSettings = ({
   editSettings,
   updateEditSettings,
   link,
   videoType,
 }) => {
-  const modifyUrl = (url, editSettings) => {
-    const { textOverlay } = editSettings;
-    if (!textOverlay || !textOverlay.text) return url;
-
-    const baseUrl = url.split("/upload/");
-    if (baseUrl.length < 2) return url;
-
-    // Metni encode et
-    const wrappedText = encodeURIComponent(textOverlay.text);
-
-    const colorHex = textOverlay.color.replace("#", "");
-
-    const backgroundHex =
-      textOverlay && textOverlay.backgroundColor?.replace("#", "");
-
-    const fontSize = textOverlay.fontSize;
-    const width = videoType === "tallVideo" ? "850" : "1700";
-
-    let gravity = "north";
-    let yOffset = ",y_50";
-
-    if (textOverlay.position === "bottom") {
-      gravity = "south";
-    } else if (textOverlay.position === "center") {
-      gravity = "center";
-      yOffset = "";
-    }
-    const backgroundColor = backgroundHex ? `b_rgb:${backgroundHex}` : "";
-    const transformation = `w_${width},c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset},${backgroundColor}`;
-
-    return `${baseUrl[0]}/upload/${transformation}/${baseUrl[1]}`;
-  };
-  const editedVideoLink = modifyUrl(link, editSettings);
+  const editedVideoLink = modifyUrl(link, editSettings, videoType);
   console.log(editedVideoLink);
   return (
     <div className="p-4 border-t border-amber-200 space-y-4">
