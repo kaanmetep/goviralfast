@@ -12,13 +12,13 @@ const VideoEditPage = ({ video }) => {
   const [videoWidth, setVideoWidth] = useState(0);
   const [videoHeight, setVideoHeight] = useState(0);
   const videoType = videoWidth > videoHeight ? "wideVideo" : "tallVideo";
-  console.log(videoType);
   const [editSettings, setEditSettings] = useState({
     audioSource: "original",
     textOverlay: {
       text: "",
       position: "top",
       color: "#FFFFFF",
+      backgroundColor: "",
       fontSize: "48",
     },
   });
@@ -86,7 +86,7 @@ const VideoEditPage = ({ video }) => {
     videoElement.addEventListener("canplay", updateDuration);
     videoElement.addEventListener("ended", handleVideoEnd);
     videoElement.addEventListener("loadedmetadata", updateMetadata);
-    console.log(video.link);
+
     return () => {
       videoElement.removeEventListener("timeupdate", updateTime);
       videoElement.removeEventListener("loadedmetadata", updateDuration);
@@ -127,6 +127,7 @@ const VideoEditPage = ({ video }) => {
                 style={{
                   color: editSettings.textOverlay.color,
                   fontSize: `${editSettings.textOverlay.fontSize / 3.5}px`,
+                  backgroundColor: editSettings.textOverlay.backgroundColor,
                   left: "50%",
                   transform: "translateX(-50%)",
                   ...(editSettings.textOverlay.position === "center"

@@ -17,6 +17,10 @@ const VideoEditSettings = ({
     const wrappedText = encodeURIComponent(textOverlay.text);
 
     const colorHex = textOverlay.color.replace("#", "");
+
+    const backgroundHex =
+      textOverlay && textOverlay.backgroundColor?.replace("#", "");
+
     const fontSize = textOverlay.fontSize;
     const width = videoType === "tallVideo" ? "850" : "1700";
 
@@ -29,29 +33,13 @@ const VideoEditSettings = ({
       gravity = "center";
       yOffset = "";
     }
+    const backgroundColor = backgroundHex ? `b_rgb:${backgroundHex}` : "";
+    const transformation = `w_${width},c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset},${backgroundColor}`;
 
-    // Cloudinary otomatik satır bölme için w_ parametresi kullanılır
-    const transformation = `w_${width},c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset}`;
-    const handleDownload = async () => {
-      try {
-        const response = await fetch(modifyUrl(link, editSettings)); // Cloudinary linkini al
-        const blob = await response.blob(); // Binary veri olarak indir
-        const url = window.URL.createObjectURL(blob); // Tarayıcıda bir URL oluştur
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "video.mp4";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error("Video indirilemedi:", error);
-      }
-    };
     return `${baseUrl[0]}/upload/${transformation}/${baseUrl[1]}`;
   };
   const editedVideoLink = modifyUrl(link, editSettings);
-
+  console.log(editedVideoLink);
   return (
     <div className="p-4 border-t border-amber-200 space-y-4">
       <div className="flex items-center justify-between">
@@ -62,7 +50,7 @@ const VideoEditSettings = ({
       </div>
 
       <div className="space-y-4">
-        {/* this will be added later */}
+        {/* ::: TODO ::: this will be added later */}
         {/* Audio Source Selection */}
         {/* <div className="space-y-2">
           <label className="block text-sm font-medium text-amber-700">
@@ -102,7 +90,7 @@ const VideoEditSettings = ({
           </div>
         </div> */}
 
-        {editSettings.audioSource === "new" && (
+        {/* {editSettings.audioSource === "new" && (
           <div className="space-y-2">
             <label className="block text-sm font-medium text-amber-700">
               Audio File
@@ -143,7 +131,7 @@ const VideoEditSettings = ({
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Text Overlay Settings */}
         <div className="space-y-3">
@@ -221,12 +209,54 @@ const VideoEditSettings = ({
               />
             </div>
           </div>
+          <div>
+            <label className="block text-sm font-medium text-amber-700 mb-1">
+              Background Color
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={editSettings.textOverlay.backgroundColor}
+                onChange={(e) =>
+                  updateEditSettings(
+                    "textOverlay.backgroundColor",
+                    e.target.value
+                  )
+                }
+                className="h-10 w-10 border border-amber-300 rounded cursor-pointer"
+              />
+              <input
+                type="text"
+                value={editSettings.textOverlay.backgroundColor}
+                onChange={(e) =>
+                  updateEditSettings(
+                    "textOverlay.backgroundColor",
+                    e.target.value
+                  )
+                }
+                placeholder="Add background color"
+                className="flex-1 px-3 py-2 border border-amber-300 rounded-md focus:outline-none focus:ring-1 focus:ring-amber-500"
+              />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <button
+              className={`-mt-2 opacity-0 pointer-events-none  bg-amber-200 font-semibold text-xs px-2 py-1 rounded-lg hover:bg-amber-300 delay-[50ms] transition-all cursor-pointer ${
+                editSettings.textOverlay.backgroundColor &&
+                "opacity-100 pointer-events-auto"
+              }`}
+              onClick={() =>
+                updateEditSettings("textOverlay.backgroundColor", "")
+              }
+            >
+              Remove
+            </button>
+          </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex gap-3 pt-2">
           <VideoDownloadButton link={editedVideoLink} />
-
           <div className="relative ">
             <button
               type="button"
