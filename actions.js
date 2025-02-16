@@ -14,8 +14,6 @@ export const signOutAction = async () => {
 };
 
 export async function downloadFile(link, uploadedAudio) {
-  // KULLANICI BIR TEXT GIRMESE BILE SES EKLENIYOR MU DIYE BAK.
-
   try {
     let linkBeforeAudioOption = link;
     if (uploadedAudio) {
@@ -51,15 +49,7 @@ export async function downloadFile(link, uploadedAudio) {
         throw error;
       }
     }
-    const response = await fetch(linkBeforeAudioOption);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch file: ${response.statusText}`);
-    }
-
-    const blob = await response.blob();
-    const arrayBuffer = await blob.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    return buffer;
+    return linkBeforeAudioOption;
   } catch (error) {
     console.error("File download failed:", error);
     throw error;

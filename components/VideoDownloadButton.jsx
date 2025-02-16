@@ -9,13 +9,21 @@ const VideoDownloadButton = ({ link, uploadedAudio }) => {
     setLoading(true);
 
     try {
-      const buffer = await downloadFile(link, uploadedAudio);
+      // Server Action'dan sadece linkBeforeAudioOption'u alıyoruz
+      const downloadUrl = await downloadFile(link, uploadedAudio);
 
-      // Blob oluştur
-      const blob = new Blob([buffer]);
+      if (!downloadUrl) {
+        throw new Error("Download URL couldn't be generated");
+      }
+
+      const response = await fetch(downloadUrl);
+
+      if (!response.ok) {
+        throw new Error("Download failed");
+      }
+      const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
 
-      // İndirme işlemi
       const a = document.createElement("a");
       a.href = url;
       a.download = "video.mp4";
