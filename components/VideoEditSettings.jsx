@@ -1,6 +1,7 @@
 import { Edit } from "lucide-react";
 import VideoDownloadButton from "./VideoDownloadButton";
 import { modifyUrl } from "@/utils/helpers";
+import { useState, useEffect } from "react";
 const VideoEditSettings = ({
   editSettings,
   updateEditSettings,
@@ -8,6 +9,18 @@ const VideoEditSettings = ({
   videoType,
 }) => {
   const editedVideoLink = modifyUrl(link, editSettings, videoType);
+  const [uploadedAudio, setUploadedAudio] = useState(null);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setUploadedAudio(file);
+    }
+  };
+  useEffect(() => {
+    if (editSettings.audioSource === "original") {
+      setUploadedAudio(null);
+    }
+  }, [editSettings.audioSource]);
   console.log(editedVideoLink);
   return (
     <div className="p-4 border-t border-amber-200 space-y-4">
@@ -19,9 +32,8 @@ const VideoEditSettings = ({
       </div>
 
       <div className="space-y-4">
-        {/* ::: TODO ::: this will be added later */}
         {/* Audio Source Selection */}
-        {/* <div className="space-y-2">
+        <div className="space-y-2">
           <label className="block text-sm font-medium text-amber-700">
             Audio Source
           </label>
@@ -57,9 +69,8 @@ const VideoEditSettings = ({
               </span>
             </label>
           </div>
-        </div> */}
-
-        {/* {editSettings.audioSource === "new" && (
+        </div>
+        {editSettings.audioSource === "new" && (
           <div className="space-y-2">
             <label className="block text-sm font-medium text-amber-700">
               Audio File
@@ -95,13 +106,13 @@ const VideoEditSettings = ({
                     type="file"
                     className="hidden"
                     accept=".mp3,.wav,.m4a"
+                    onChange={handleFileChange}
                   />
                 </label>
               </div>
             </div>
           </div>
-        )} */}
-
+        )}
         {/* Text Overlay Settings */}
         <div className="space-y-3">
           <label className="block text-sm font-medium text-amber-700">
@@ -222,10 +233,12 @@ const VideoEditSettings = ({
             </button>
           </div>
         </div>
-
         {/* Action Buttons */}
         <div className="flex gap-3 pt-2">
-          <VideoDownloadButton link={editedVideoLink} />
+          <VideoDownloadButton
+            link={editedVideoLink}
+            uploadedAudio={uploadedAudio}
+          />
           <div className="relative ">
             <button
               type="button"

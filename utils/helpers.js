@@ -1,11 +1,21 @@
 export const modifyUrl = (url, editSettings, videoType) => {
-  const { textOverlay } = editSettings;
-  if (!textOverlay || !textOverlay.text) return url;
+  const { textOverlay, audioSource } = editSettings;
 
+  let transformation;
   const baseUrl = url.split("/upload/");
   if (baseUrl.length < 2) return url;
 
-  // Metni encode et
+  // Sound exist but text doesnt exist.
+  if (audioSource !== "original") {
+    if (!textOverlay.text) {
+      transformation = `ac_none`;
+      return `${baseUrl[0]}/upload/${transformation}/${baseUrl[1]}`;
+    }
+  }
+
+  if (!textOverlay || !textOverlay.text) return url; //Sound doesnt exit, also text doesnt exist. so just return the original url.
+
+  // Below here, sound exists or not but text exists
   const wrappedText = encodeURIComponent(textOverlay.text);
 
   const colorHex = textOverlay.color.replace("#", "");
@@ -26,7 +36,9 @@ export const modifyUrl = (url, editSettings, videoType) => {
     yOffset = "";
   }
   const backgroundColor = backgroundHex ? `b_rgb:${backgroundHex}` : "";
-  const transformation = `w_${width},c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset},${backgroundColor}`;
+  transformation = `${
+    audioSource !== "original" ? "ac_none/" : "/"
+  }w_${width},c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset},${backgroundColor}`;
 
   return `${baseUrl[0]}/upload/${transformation}/${baseUrl[1]}`;
 };

@@ -1,16 +1,21 @@
 "use client";
 import { useState } from "react";
-
-const VideoDownloadButton = ({ link }) => {
+import { downloadFile } from "@/actions";
+const VideoDownloadButton = ({ link, uploadedAudio }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async (e) => {
-    e.preventDefault(); // Sayfanın yenilenmesini engelle
-    setLoading(true); // Yükleme başlasın
+    e.preventDefault();
+    setLoading(true);
+
     try {
-      const response = await fetch(link); // Cloudinary linkinden videoyu çek
-      const blob = await response.blob();
+      const buffer = await downloadFile(link, uploadedAudio);
+
+      // Blob oluştur
+      const blob = new Blob([buffer]);
       const url = window.URL.createObjectURL(blob);
+
+      // İndirme işlemi
       const a = document.createElement("a");
       a.href = url;
       a.download = "video.mp4";
@@ -19,9 +24,10 @@ const VideoDownloadButton = ({ link }) => {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Video indirilemedi:", error);
+      console.error("Download failed:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false); // Yükleme bitti
   };
 
   return (
