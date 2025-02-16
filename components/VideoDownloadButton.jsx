@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { downloadFile } from "@/actions";
+import { getDownloadUrl } from "@/actions";
 const VideoDownloadButton = ({ link, uploadedAudio }) => {
   const [loading, setLoading] = useState(false);
 
@@ -9,40 +9,32 @@ const VideoDownloadButton = ({ link, uploadedAudio }) => {
     setLoading(true);
 
     try {
-      // Server Action'dan sadece linkBeforeAudioOption'u alıyoruz
-      const downloadUrl = await downloadFile(link, uploadedAudio);
+      const downloadUrl = await getDownloadUrl(link, uploadedAudio);
 
-      if (!downloadUrl) {
-        throw new Error("Download URL couldn't be generated");
-      }
-
-      const response = await fetch(downloadUrl);
-
-      if (!response.ok) {
-        throw new Error("Download failed");
-      }
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "video.mp4";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      const downloadLink = document.getElementById("download-link");
+      downloadLink.href = downloadUrl;
+      downloadLink.download = "video.mp4";
+      downloadLink.click();
     } catch (error) {
-      console.error("Download failed:", error);
+      console.error("İndirme işlemi sırasında bir hata oluştu:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <button
-      onClick={handleDownload}
-      className="flex-1 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-amber-300 rounded-md hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 flex items-center justify-center"
-      disabled={loading} // Yüklenirken tıklamayı engelle
+    <a
+      onClick={(e) => {
+        if (!loading) {
+          handleDownload(e);
+        }
+      }}
+      id="download-link"
+      href="javascript:void(0)"
+      className={`flex-1 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-amber-300 rounded-md hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 flex items-center justify-center ${
+        loading ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+      style={{ pointerEvents: loading ? "none" : "auto" }} // Yükleme sırasında tıklamayı engelle
     >
       {loading ? (
         <svg
@@ -68,7 +60,7 @@ const VideoDownloadButton = ({ link, uploadedAudio }) => {
       ) : (
         "Download Video"
       )}
-    </button>
+    </a>
   );
 };
 export default VideoDownloadButton;

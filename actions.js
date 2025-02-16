@@ -13,7 +13,7 @@ export const signOutAction = async () => {
   await signOut({ redirect: "/" });
 };
 
-export async function downloadFile(link, uploadedAudio) {
+export async function getDownloadUrl(link, uploadedAudio) {
   try {
     let linkBeforeAudioOption = link;
     if (uploadedAudio) {
