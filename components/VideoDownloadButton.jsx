@@ -10,7 +10,7 @@ const VideoDownloadButton = ({ link, uploadedAudio }) => {
 
     try {
       const downloadUrl = await getDownloadUrl(link, uploadedAudio);
-
+      console.log("downloadUrl:", downloadUrl);
       const downloadLink = document.getElementById("download-link");
       downloadLink.href = downloadUrl;
       downloadLink.download = "video.mp4";
@@ -31,6 +31,7 @@ const VideoDownloadButton = ({ link, uploadedAudio }) => {
       }}
       id="download-link"
       href="javascript:void(0)"
+      target="_blank"
       className={`flex-1 px-4 py-2 text-sm font-medium text-amber-900 bg-amber-100 border border-amber-300 rounded-md hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 flex items-center justify-center ${
         loading ? "opacity-50 cursor-not-allowed" : ""
       }`}

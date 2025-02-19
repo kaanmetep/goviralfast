@@ -7,6 +7,7 @@ import VideoSection from "@/components/VideoSection";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
 import Banner from "@/components/Banner";
+import ProgressBar from "@/components/ProgressBar";
 import { auth } from "@/auth";
 export default async function Home() {
   const session = await auth();
@@ -15,6 +16,7 @@ export default async function Home() {
     <div>
       <div className="flex flex-col mx-auto w-[95%]  md:w-[90%] max-w-[1500px]">
         <Header session={session} />
+        <ProgressBar />
         <main>
           <HeroSection />
           <div className="w-full  flex justify-center">
@@ -25,6 +27,7 @@ export default async function Home() {
           <VideoSection />
         </main>
       </div>
+
       <Pricing />
       <Banner />
       <Footer />

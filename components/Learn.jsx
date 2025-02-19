@@ -18,7 +18,7 @@ const Learn = () => {
         <li className="learn-item">
           <p className="learn-number ">1</p>
           <div className="flex items-center gap-3">
-            <Video className="text-yellow-500 w-8 h-8" />
+            <Video className=" w-8 h-8" />
             <p className="learn-text">Pick a trending video</p>
           </div>
           <p className="text-gray-600 mt-2">
@@ -31,7 +31,7 @@ const Learn = () => {
         <li className="learn-item ">
           <p className="learn-number">2</p>
           <div className="flex items-center gap-3">
-            <Type className="text-blue-500 w-8 h-8" />
+            <Type className=" w-8 h-8" />
             <p className="learn-text">Add your own caption</p>
           </div>
           <p className="text-gray-600 mt-2">
@@ -44,7 +44,7 @@ const Learn = () => {
         <li className="learn-item ">
           <p className="learn-number text-green-500 font-bold text-xl">3</p>
           <div className="flex items-center gap-3">
-            <Hash className="text-green-500 w-8 h-8" />
+            <Hash className=" w-8 h-8" />
             <p className="learn-text">Choose the best hashtags</p>
           </div>
           <p className="text-gray-600 mt-2">
@@ -57,7 +57,7 @@ const Learn = () => {
         <li className="learn-item">
           <p className="learn-number text-red-500 ">4</p>
           <div className="flex items-center gap-3">
-            <Share2 className="text-red-500 w-8 h-8" />
+            <Share2 className=" w-8 h-8" />
             <p className="learn-text">Share it with one click</p>
           </div>
           <p className="text-gray-600 mt-2">
