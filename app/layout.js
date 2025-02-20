@@ -1,3 +1,5 @@
+import { AppProvider } from "@/context/AppContext";
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 import { Bricolage_Grotesque } from "next/font/google";
 
@@ -15,7 +17,11 @@ const bric = Bricolage_Grotesque({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${bric.variable}  bg-gray-50 `}>{children}</body>
+      <body className={`${bric.variable}  bg-gray-50 `}>
+        <SessionProvider>
+          <AppProvider>{children}</AppProvider>
+        </SessionProvider>
+      </body>
     </html>
   );
 }

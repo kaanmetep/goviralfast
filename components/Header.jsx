@@ -1,11 +1,8 @@
 "use client";
-import { Rocket } from "lucide-react";
+import { Rocket, Menu } from "lucide-react";
 import Navigation from "./Navigation";
 import { useState, useEffect } from "react";
-import { Menu } from "lucide-react";
-import { FaGoogle } from "react-icons/fa";
-import { signInAction } from "@/actions";
-import Link from "next/link";
+import Button from "./Button";
 const Header = ({ session }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
@@ -26,7 +23,7 @@ const Header = ({ session }) => {
   return (
     <header
       className={`flex gap-16 items-center justify-center w-full p-5 lg:px-8 transition-all duration-300  ${
-        isScrolled && "   shadow-md backdrop-blur-md"
+        isScrolled && "shadow-md backdrop-blur-md"
       } fixed top-0 left-0 z-50 st`}
     >
       <div className="flex items-center gap-1 ">
@@ -39,7 +36,7 @@ const Header = ({ session }) => {
         <Menu className="cursor-pointer" />
         <div className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto top-6 right-0 absolute bg-white shadow-lg rounded-lg transition-all duration-200 border border-gray-300 px-">
           <nav>
-            <ul className="flex flex-col gap-1 p-2">
+            <ul className="flex flex-col  gap-1 p-2">
               <li className="cursor-pointer hover:bg-gray-100 transition-all duration-150 rounded-lg">
                 <a
                   href="#pricing"
@@ -56,19 +53,8 @@ const Header = ({ session }) => {
                   Learn
                 </a>
               </li>
-              <li className="cursor-pointer bg-blue-400 text-white font-semibold rounded-lg gap-2 px-2 py-2 transition-all duration-150 text-center hover:bg-blue-500 ">
-                <form action={signInAction}>
-                  {session ? (
-                    <Link href={"/dashboard"}>Dashboard</Link>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <FaGoogle className="size-4" />{" "}
-                      <button className="block text-center whitespace-nowrap text-sm">
-                        Login with Google
-                      </button>
-                    </div>
-                  )}
-                </form>
+              <li className="mx-auto">
+                <Button logo={false}>{session ? "Dashboard" : "Login"}</Button>
               </li>
             </ul>
           </nav>
