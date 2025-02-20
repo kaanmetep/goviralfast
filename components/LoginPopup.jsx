@@ -4,6 +4,7 @@ import { FaGoogle } from "react-icons/fa";
 import { useAppContext } from "@/context/AppContext";
 import { signInAction } from "@/actions";
 import { useTransition } from "react";
+import { motion } from "framer-motion";
 
 const LoginPopup = () => {
   const [isPending, startTransition] = useTransition();
@@ -26,7 +27,13 @@ const LoginPopup = () => {
           }`}
         >
           {selectedOption === "signup" ? (
-            <>
+            <motion.div
+              key="signup"
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "-100%", opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <h2 className={`text-4xl  ml-6 font-thin $`}>Sign Up</h2>
               <div>
                 <form action="" className="mt-2 p-6 flex flex-col gap-6">
@@ -114,7 +121,7 @@ const LoginPopup = () => {
                   </button>
                 </div>
               </div>
-            </>
+            </motion.div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-1">
               <div className="flex items-center gap-1 ">
@@ -142,7 +149,13 @@ const LoginPopup = () => {
           }`}
         >
           {selectedOption === "signin" ? (
-            <>
+            <motion.div
+              key="signup"
+              initial={{ x: "-100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "-100%", opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <h2 className={`text-4xl  ml-6 font-thin $`}>Sign In</h2>
               <div>
                 <form action="" className="mt-2 p-6 flex flex-col gap-10">
@@ -182,11 +195,12 @@ const LoginPopup = () => {
                     )}
                   </button>
                 </div>
+
                 <p className="text-center text-gray-600 text-sm border-b border-black w-fit mx-auto mt-8 cursor-pointer">
                   Forgot your password?
                 </p>
               </div>
-            </>
+            </motion.div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-1">
               <div className="flex items-center gap-1 ">
