@@ -16,7 +16,7 @@ export default async function Home() {
     <div>
       <LoginPopup />
       <div className="flex flex-col mx-auto w-[95%]  md:w-[90%] max-w-[1500px]">
-        <Header />
+        <Header session={session} />
         <ProgressBar />
         <main>
           <HeroSection />
