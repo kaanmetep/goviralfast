@@ -3,7 +3,9 @@ import { Rocket, Menu } from "lucide-react";
 import Navigation from "./Navigation";
 import { useState, useEffect } from "react";
 import Button from "./Button";
-const Header = ({ session }) => {
+import { useSession } from "next-auth/react";
+const Header = () => {
+  const { data: session } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {

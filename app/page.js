@@ -8,15 +8,14 @@ import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
 import Banner from "@/components/Banner";
 import ProgressBar from "@/components/ProgressBar";
-import { auth } from "@/auth";
 import LoginPopup from "@/components/LoginPopup";
+
 export default async function Home() {
-  const session = await auth();
   return (
     <div>
       <LoginPopup />
       <div className="flex flex-col mx-auto w-[95%]  md:w-[90%] max-w-[1500px]">
-        <Header session={session} />
+        <Header />
         <ProgressBar />
         <main>
           <HeroSection />

@@ -14,6 +14,10 @@ export const signOutAction = async () => {
 };
 
 export async function getDownloadUrl(link, uploadedAudio) {
+  const timestap = Date.now();
+  if (uploadedAudio && uploadedAudio.size > 1 * 1024 * 1024) {
+    throw new Error("Audio file cant be more than 1MB!");
+  }
   try {
     let linkBeforeAudioOption = link;
     if (uploadedAudio) {
@@ -26,7 +30,7 @@ export async function getDownloadUrl(link, uploadedAudio) {
           const uploadStream = cloudinary.uploader.upload_stream(
             {
               resource_type: "auto",
-              public_id: "temp_audio",
+              public_id: `temp_audio${timestap}`,
               discard_original_filename: true,
               use_filename: false,
             },

@@ -15,7 +15,11 @@ const Button = ({ children, logo = true }) => {
       setSelectedOption("signin");
     } else {
       const latestSession = await getSession();
-      if (latestSession) router.push("/dashboard");
+      if (latestSession) {
+        router.push("/dashboard");
+      } else {
+        setSelectedOption("signin");
+      }
     }
   };
 

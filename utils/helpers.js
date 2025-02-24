@@ -1,12 +1,12 @@
-export const modifyUrl = (url, editSettings, videoType) => {
-  const { textOverlay, audioSource } = editSettings;
+export const modifyUrl = (url, editSettings, videoType, uploadedAudio) => {
+  const { textOverlay } = editSettings;
 
   let transformation;
   const baseUrl = url.split("/upload/");
   if (baseUrl.length < 2) return url;
 
   // Sound exist but text doesnt exist.
-  if (audioSource !== "original") {
+  if (uploadedAudio) {
     if (!textOverlay.text) {
       transformation = `ac_none`;
       return `${baseUrl[0]}/upload/${transformation}/${baseUrl[1]}`;
@@ -15,7 +15,7 @@ export const modifyUrl = (url, editSettings, videoType) => {
 
   if (!textOverlay || !textOverlay.text) return url; //Sound doesnt exit, also text doesnt exist. so just return the original url.
 
-  // Below here, sound exists or not but text exists
+  // Below here, sound exists or not ,,  but text exists
   const wrappedText = encodeURIComponent(textOverlay.text);
 
   const colorHex = textOverlay.color.replace("#", "");
@@ -37,7 +37,7 @@ export const modifyUrl = (url, editSettings, videoType) => {
   }
   const backgroundColor = backgroundHex ? `b_rgb:${backgroundHex}` : "";
   transformation = `${
-    audioSource !== "original" ? "ac_none/" : "/"
+    uploadedAudio ? "ac_none/" : "/"
   }w_${width},c_fit,l_text:arial_${fontSize}_bold_line_spacing_3_center:${wrappedText},co_rgb:${colorHex},g_${gravity}${yOffset},${backgroundColor}`;
 
   return `${baseUrl[0]}/upload/${transformation}/${baseUrl[1]}`;
