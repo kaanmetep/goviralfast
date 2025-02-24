@@ -2,18 +2,20 @@ import { Check } from "lucide-react";
 import Button from "./Button";
 const plans = {
   Free: [
-    "3 Viral Video Creation",
-    "One-Click Editing & Sharing",
-    "Share to 3 Platforms",
-    "Up to 3 Connected Social Accounts",
+    { info: "3 Viral Video Creation", active: true },
+    { info: "One-Click Editing", active: true },
+    { info: "Download Immediately with one-click", active: true },
+    { info: "Share to 3 Platforms with one-click", active: false },
+    { info: "Up to 3 Connected Social Accounts", active: false },
   ],
   Monthly: [
-    "+15 Viral Videos Creation",
-    "One-Click Editing & Sharing",
-    "Share to 3 Platforms",
-    "Up to 10 Connected Social Accounts",
-    "Dedicated Hashtags for Each Video",
-    "New Videos Delivered Continuously",
+    { info: "+15 Viral Videos Creation", active: true },
+    { info: "One-Click Editing", active: true },
+    { info: "Download Immediately with one-click", active: true },
+    { info: "New Videos Delivered Continuously", active: true },
+    { info: "Share to 3 Platforms with one-click", active: false },
+    { info: "Up to 10 Connected Social Accounts", active: false },
+    { info: "Dedicated Hashtags for Each Video", active: false },
   ],
 };
 
@@ -28,7 +30,7 @@ const PriceCard = ({ type, oldPrice = "", currentPrice }) => {
     >
       {type === "Monthly" && (
         <span className="absolute -right-[34px] top-[24px] rotate-45 bg-yellow-400 px-8 py-1 text-sm">
-          <b className="font-extrabold">5$</b> Discount
+          <b className="font-extrabold">${oldPrice - currentPrice}</b> Discount
         </span>
       )}
       <h3 className="mb-2 text-sm text-gray-600">{type} Plan</h3>
@@ -36,10 +38,11 @@ const PriceCard = ({ type, oldPrice = "", currentPrice }) => {
         <p className="text-4xl font-semibold">
           {oldPrice && (
             <span className="text-lg line-through mr-1 font-normal">
-              {oldPrice}$
+              ${oldPrice}
             </span>
           )}
-          {currentPrice}$<span className="text-sm"> /month</span>
+          ${currentPrice}
+          <span className="text-sm"> /month</span>
         </p>
         <ul
           className={`mt-10 flex flex-col gap-6 mb-14 ${
@@ -47,9 +50,17 @@ const PriceCard = ({ type, oldPrice = "", currentPrice }) => {
           }`}
         >
           {plans[type]?.map((item) => (
-            <li key={item} className="flex items-center gap-2">
+            <li key={item.info} className="relative flex items-center gap-2">
               <Check />
-              <p>{item}</p>
+
+              <p className={`${!item.active && "text-gray-400"}`}>
+                {item.info}
+                {!item.active && (
+                  <span className="absolute text-white px-1 text-xs bg-black rounded-md  -top-2 tracking-widest font-semibold">
+                    soon!
+                  </span>
+                )}
+              </p>
             </li>
           ))}
         </ul>

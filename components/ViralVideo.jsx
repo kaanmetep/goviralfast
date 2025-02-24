@@ -3,11 +3,13 @@ import React, { useState, useEffect } from "react";
 import { Play, Pause, Edit } from "lucide-react";
 import Link from "next/link";
 import { formatTime } from "@/utils/helpers";
+
 const ViralVideo = ({ video }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isMetadataLoaded, setIsMetadataLoaded] = useState(false);
+
   const togglePlayPause = () => {
     const videoElement = document.getElementById(`video-${video.id}`);
     if (videoElement.paused) {
@@ -18,30 +20,41 @@ const ViralVideo = ({ video }) => {
       setIsPlaying(false);
     }
   };
+
   useEffect(() => {
     const videoElement = document.getElementById(`video-${video.id}`);
+
     const updateTime = () => {
       setCurrentTime(videoElement.currentTime);
     };
+
     const updateDuration = () => {
       if (!isNaN(videoElement.duration) && videoElement.duration !== Infinity) {
         setDuration(videoElement.duration);
         setIsMetadataLoaded(true);
       }
     };
+
     const handleVideoEnd = () => {
       setIsPlaying(false);
     };
 
+    // Event listener'ları ekleyelim
     videoElement.addEventListener("timeupdate", updateTime);
     videoElement.addEventListener("loadedmetadata", updateDuration);
+    videoElement.addEventListener("loadeddata", updateDuration);
     videoElement.addEventListener("durationchange", updateDuration);
     videoElement.addEventListener("canplay", updateDuration);
     videoElement.addEventListener("ended", handleVideoEnd);
 
+    if (videoElement.readyState >= 2) {
+      updateDuration();
+    }
+
     return () => {
       videoElement.removeEventListener("timeupdate", updateTime);
       videoElement.removeEventListener("loadedmetadata", updateDuration);
+      videoElement.removeEventListener("loadeddata", updateDuration);
       videoElement.removeEventListener("durationchange", updateDuration);
       videoElement.removeEventListener("canplay", updateDuration);
       videoElement.removeEventListener("ended", handleVideoEnd);
@@ -66,7 +79,7 @@ const ViralVideo = ({ video }) => {
           {/* Video */}
           <video
             id={`video-${video.id}`}
-            className="w-full  rounded-t-lg cursor-pointer "
+            className="w-full rounded-t-lg cursor-pointer"
             onClick={togglePlayPause}
           >
             <source src={video.link} type="video/mp4" />
@@ -75,7 +88,7 @@ const ViralVideo = ({ video }) => {
 
           {/* Play/Pause Button */}
           <button
-            className="opacity-0 pointer-events-none  absolute group-hover:opacity-100 group-hover:pointer-events-auto inset-0 flex items-center justify-center w-full h-full text-white bg-black bg-opacity-40 transition-all delay-[50ms]"
+            className="opacity-0 pointer-events-none absolute group-hover:opacity-100 group-hover:pointer-events-auto inset-0 flex items-center justify-center w-full h-full text-white bg-black bg-opacity-40 transition-all delay-[50ms]"
             onClick={togglePlayPause}
           >
             {isPlaying ? (
@@ -94,7 +107,7 @@ const ViralVideo = ({ video }) => {
 
         {/* Video Info Section */}
         <div className="p-4 border-t border-amber-200">
-          <h3 className=" font-semibold text-amber-900 truncate">
+          <h3 className="font-semibold text-amber-900 truncate">
             {video.title || "Untitled Video"}
           </h3>
         </div>

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Play, Pause } from "lucide-react";
 import VideoEditSettings from "./VideoEditSettings";
 import { formatTime } from "@/utils/helpers";
+
 const VideoEditPage = ({ video }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -10,6 +11,8 @@ const VideoEditPage = ({ video }) => {
   const [isMetadataLoaded, setIsMetadataLoaded] = useState(false);
   const [videoWidth, setVideoWidth] = useState(0);
   const [videoHeight, setVideoHeight] = useState(0);
+  const [videoType, setVideoType] = useState("wideVideo"); // Default değer ekledik
+
   const [editSettings, setEditSettings] = useState({
     audioSource: "original",
     textOverlay: {
@@ -20,7 +23,7 @@ const VideoEditPage = ({ video }) => {
       fontSize: "48",
     },
   });
-  const videoType = videoWidth > videoHeight ? "wideVideo" : "tallVideo";
+
   const updateEditSettings = (path, value) => {
     setEditSettings((prev) => {
       const newSettings = { ...prev };
@@ -50,40 +53,65 @@ const VideoEditPage = ({ video }) => {
 
   useEffect(() => {
     const videoElement = document.getElementById(`video-${video.id}`);
+
+    // Zaman güncellemesi için
     const updateTime = () => {
       setCurrentTime(videoElement.currentTime);
     };
+
+    // Video süresi güncellemesi için
     const updateDuration = () => {
       if (!isNaN(videoElement.duration) && videoElement.duration !== Infinity) {
         setDuration(videoElement.duration);
         setIsMetadataLoaded(true);
       }
     };
-    const handleVideoEnd = () => {
-      setIsPlaying(false);
-    };
 
+    // Video boyutlarını ve tipini güncellemek için
     const updateMetadata = () => {
       if (videoElement.videoWidth && videoElement.videoHeight) {
         setVideoWidth(videoElement.videoWidth);
         setVideoHeight(videoElement.videoHeight);
+        setVideoType(
+          videoElement.videoWidth > videoElement.videoHeight
+            ? "wideVideo"
+            : "tallVideo"
+        );
       }
     };
 
+    // Video bittiğinde
+    const handleVideoEnd = () => {
+      setIsPlaying(false);
+    };
+
+    // Event listener'ları ekleyelim
     videoElement.addEventListener("timeupdate", updateTime);
     videoElement.addEventListener("loadedmetadata", updateDuration);
+    videoElement.addEventListener("loadeddata", updateDuration);
     videoElement.addEventListener("durationchange", updateDuration);
     videoElement.addEventListener("canplay", updateDuration);
     videoElement.addEventListener("ended", handleVideoEnd);
     videoElement.addEventListener("loadedmetadata", updateMetadata);
+    videoElement.addEventListener("loadeddata", updateMetadata);
+    videoElement.addEventListener("canplay", updateMetadata);
 
+    if (videoElement.readyState >= 2) {
+      updateDuration();
+      updateMetadata();
+    }
+
+    // Temizleme işlemi
     return () => {
       videoElement.removeEventListener("timeupdate", updateTime);
       videoElement.removeEventListener("loadedmetadata", updateDuration);
+      videoElement.removeEventListener("loadeddata", updateDuration);
       videoElement.removeEventListener("durationchange", updateDuration);
       videoElement.removeEventListener("canplay", updateDuration);
       videoElement.removeEventListener("ended", handleVideoEnd);
       videoElement.removeEventListener("loadedmetadata", updateMetadata);
+      videoElement.removeEventListener("loadeddata", updateMetadata);
+      videoElement.removeEventListener("canplay", updateMetadata);
     };
   }, [video.id]);
 

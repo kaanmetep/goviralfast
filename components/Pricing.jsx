@@ -15,7 +15,7 @@ const Pricing = () => {
         Simple & Straightforward Pricing
       </p>
       <div className="flex flex-col md:flex-row gap-6 mt-8">
-        <PriceCard type={"Monthly"} oldPrice={"10"} currentPrice={"5"} />
+        <PriceCard type={"Monthly"} oldPrice={"10"} currentPrice={"4"} />
         <PriceCard type={"Free"} currentPrice={"0"} />
       </div>
     </div>

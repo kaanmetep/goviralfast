@@ -7,9 +7,9 @@ const DashboardMain = ({ videos }) => {
   const [sortOption, setSortOption] = useState("recentlyadded");
   // Responsive sütun ayarları
   const breakpointColumns = {
-    default: 3, // Başlangıçta 4 sütun
+    default: 3, // Başlangıçta 3 sütun
     1280: 3,
-    1100: 2, // 1100px altında 3 sütun
+    1100: 2, // 1100px altında 2 sütun
     // 840: 2, // 768px altında 2 sütun
     480: 1, // 480px altında 1 sütun
   };
