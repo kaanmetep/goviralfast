@@ -1,80 +1,34 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { getDownloadUrl } from "@/actions";
 
 const VideoDownloadButton = ({ link, uploadedAudio }) => {
   const [loading, setLoading] = useState(false);
-  const [downloadUrl, setDownloadUrl] = useState("");
   const downloadLinkRef = useRef(null);
-  const [isSafari, setIsSafari] = useState(false);
-
-  useEffect(() => {
-    const detectSafari = () => {
-      const userAgent = navigator.userAgent.toLowerCase();
-      return /safari/.test(userAgent) && !/chrome/.test(userAgent);
-    };
-
-    setIsSafari(detectSafari());
-  }, []);
 
   const handleDownload = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // URL'yi hazırla
       const url = await getDownloadUrl(link, uploadedAudio);
-      setDownloadUrl(url);
 
-      // Safari için özel işlem
-      if (isSafari) {
-        // Blob kullanarak veriyi indirmeye zorla
-        fetch(url)
-          .then((response) => response.blob())
-          .then((blob) => {
-            // Blob URL oluştur
-            const blobUrl = window.URL.createObjectURL(blob);
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
 
-            // İndirme işlemi
-            if (downloadLinkRef.current) {
-              downloadLinkRef.current.href = blobUrl;
-              downloadLinkRef.current.download = "video.mp4";
-              downloadLinkRef.current.click();
+      if (downloadLinkRef.current) {
+        downloadLinkRef.current.href = blobUrl;
+        downloadLinkRef.current.download = "video.mp4";
+        downloadLinkRef.current.click();
 
-              // Belleği temizle
-              setTimeout(() => {
-                window.URL.revokeObjectURL(blobUrl);
-              }, 100);
-            }
-          })
-          .catch((err) => {
-            console.error("Safari indirme hatası:", err);
-            alert(
-              "Safari'de indirme sırasında bir hata oluştu. Lütfen tekrar deneyin."
-            );
-          });
-      } else {
-        // Mobil tarayıcı tespiti (Safari hariç)
-        const isMobile =
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-          ) && !isSafari;
-
-        if (isMobile) {
-          // Mobil cihazlar için doğrudan tarayıcıda indirme yöntemi
-          window.location.href = url;
-        } else {
-          // Masaüstü için programatik indirme
-          if (downloadLinkRef.current) {
-            downloadLinkRef.current.href = url;
-            downloadLinkRef.current.download = "video.mp4";
-            downloadLinkRef.current.click();
-          }
-        }
+        setTimeout(() => {
+          window.URL.revokeObjectURL(blobUrl);
+        }, 100);
       }
     } catch (error) {
-      console.error("İndirme hatası:", error);
-      alert("Video indirilemedi. Lütfen tekrar deneyin.");
+      console.error("Download error:", error);
+      alert("Video could not downloaded. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -82,17 +36,8 @@ const VideoDownloadButton = ({ link, uploadedAudio }) => {
 
   return (
     <>
-      {/* Görünmeyen gerçek indirme linki */}
-      <a
-        ref={downloadLinkRef}
-        href={downloadUrl || "#"}
-        download="video.mp4"
-        className="hidden"
-        aria-hidden="true"
-        target="_blank"
-      />
+      <a ref={downloadLinkRef} className="hidden" aria-hidden="true" />
 
-      {/* Kullanıcı arayüzü butonu */}
       <button
         onClick={handleDownload}
         disabled={loading}
