@@ -8,13 +8,13 @@ const VideoSection = () => {
           <span className="absolute h-[14px] w-full bg-yellow-300/80 bottom-1 left-0 z-[-1] rounded-md"></span>
         </h2>
       </div>
-      <p className="text-center text-lg text-gray-800">
+      <p className="text-center text-base md:text-lg text-gray-800">
         No unnecessary features, no complicated dashboard. Created just to get
         your job done
       </p>
 
       <div>
-        <p className="text-center text-gray-500">
+        <p className="text-sm md:text-base text-center text-gray-500">
           It only takes 40 seconds to go viral with GoViralFast!
         </p>
       </div>

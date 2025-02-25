@@ -22,7 +22,7 @@ const plans = {
 const PriceCard = ({ type, oldPrice = "", currentPrice }) => {
   return (
     <div
-      className={`flex flex-col flex-1 relative p-4  shadow-lg rounded-md overflow-hidden ${
+      className={`text-sm md:text-base flex flex-col flex-1 relative p-4  shadow-lg rounded-md overflow-hidden ${
         type === "Free"
           ? "shadow-sm bg-gray-100"
           : "shadow-2xl border-2 border-yellow-50 bg-white"
@@ -35,9 +35,9 @@ const PriceCard = ({ type, oldPrice = "", currentPrice }) => {
       )}
       <h3 className="mb-2 text-sm text-gray-600">{type} Plan</h3>
       <div>
-        <p className="text-4xl font-semibold">
+        <p className="text-2xl md:text-4xl font-semibold">
           {oldPrice && (
-            <span className="text-lg line-through mr-1 font-normal">
+            <span className="text-base md:text-lg line-through mr-1 font-normal">
               ${oldPrice}
             </span>
           )}
@@ -56,7 +56,7 @@ const PriceCard = ({ type, oldPrice = "", currentPrice }) => {
               <p className={`${!item.active && "text-gray-400"}`}>
                 {item.info}
                 {!item.active && (
-                  <span className="absolute text-white px-1 text-xs bg-black rounded-md  -top-2 tracking-widest font-semibold">
+                  <span className="absolute text-white px-1 text-[10px] md:text-xs bg-black rounded-md  -top-3 md:-top-2 tracking-widest font-semibold">
                     soon!
                   </span>
                 )}
