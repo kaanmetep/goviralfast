@@ -11,7 +11,8 @@ const VideoEditPage = ({ video }) => {
   const [isMetadataLoaded, setIsMetadataLoaded] = useState(false);
   const [videoWidth, setVideoWidth] = useState(0);
   const [videoHeight, setVideoHeight] = useState(0);
-  const [videoType, setVideoType] = useState("wideVideo"); // Default değer ekledik
+  const [videoType, setVideoType] = useState("wideVideo");
+  const [isMobile, setIsMobile] = useState(false);
 
   const [editSettings, setEditSettings] = useState({
     audioSource: "original",
@@ -50,7 +51,14 @@ const VideoEditPage = ({ video }) => {
       setIsPlaying(false);
     }
   };
+  // Check if device is mobile on initial load only
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
+    checkIfMobile();
+  }, []);
   useEffect(() => {
     const videoElement = document.getElementById(`video-${video.id}`);
 
@@ -129,6 +137,8 @@ const VideoEditPage = ({ video }) => {
               id={`video-${video.id}`}
               className="rounded-t-lg cursor-pointer max-w-[600px] max-h-[600px] w-full h-auto"
               onClick={togglePlayPause}
+              {...(isMobile ? { poster: video.poster } : {})}
+              playsInline
             >
               <source src={video.link} type="video/mp4" />
               Your browser does not support the video tag.

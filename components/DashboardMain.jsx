@@ -5,13 +5,12 @@ import { useState } from "react";
 
 const DashboardMain = ({ videos }) => {
   const [sortOption, setSortOption] = useState("recentlyadded");
-  // Responsive sütun ayarları
   const breakpointColumns = {
     default: 3, // Başlangıçta 3 sütun
     1280: 3,
     1100: 2, // 1100px altında 2 sütun
-    // 840: 2, // 768px altında 2 sütun
-    480: 1, // 480px altında 1 sütun
+    // 840: 2,
+    480: 1,
   };
 
   return (
@@ -36,7 +35,7 @@ const DashboardMain = ({ videos }) => {
           ))}
         </ul>
       </div>
-      <div className="w-fit">
+      <div className="w-fit px-4 sm:px-2">
         {/* Masonry bileşeni */}
         <Masonry
           breakpointCols={breakpointColumns}
@@ -44,7 +43,7 @@ const DashboardMain = ({ videos }) => {
           columnClassName="masonry-column"
         >
           {videos
-            .slice() // Orijinal diziyi korumak için kopyasını al
+            .slice()
             .sort((a, b) =>
               sortOption === "mostpopular"
                 ? b.popularity - a.popularity
