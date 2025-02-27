@@ -1,10 +1,52 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google],
+  // Providers: Desteklenen giriş yöntemleri
+  providers: [
+    // 1. Bu provider Google ile giriş yapmak isteyenler için çalışır
+    Google,
+
+    // 2. Supabase ile email/password girişi için provider
+    CredentialsProvider({
+      id: "supabase", // Provider'ın benzersiz ID'si
+      name: "Supabase",
+      credentials: {
+        // Giriş için gerekli alanlar
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      // authorize: Kullanıcı girişi doğrulama fonksiyonu
+      // Bu fonksiyon sadece Supabase ile giriş yapılırken çalışır
+      async authorize(credentials) {
+        try {
+          if (!credentials?.id || !credentials?.email) {
+            return null;
+          }
+
+          return {
+            id: credentials.id,
+            email: credentials.email,
+          };
+
+          // Giriş başarılıysa, NextAuth için user objesi döndür
+          // bunu dondurmek zorundayiz cunku daha sonra asagidaki session fonksiyonunda bu emaili kullanmamiz gerek. ve token.sub icinde id dondurmemiz lazim kesinlikle. cunku nextuath bu ID'yi jwt token'ina ekliycek.
+          return {
+            id: user.id,
+            email: user.email,
+          };
+        } catch (error) {
+          console.error("Unexpected error:", error);
+          return null;
+        }
+      },
+    }),
+  ],
+
   callbacks: {
+    // 1. signIn: Kullanıcı giriş yaptığında çalışır
     async signIn({ user }) {
       try {
         const supabase = createClient();
@@ -12,23 +54,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // Kullanıcının veritabanında olup olmadığını kontrol et
         const { data: existingUser, error } = await supabase
           .from("users")
-          .select("email")
+          .select("*")
           .eq("email", user.email)
-          .single(); // Tek bir kayıt al
+          .single();
 
         if (error && error.code !== "PGRST116") {
-          // Kullanıcı yoksa hata oluşabilir, ama diğer hataları kontrol etmeliyiz
           console.log("Error fetching user:", error);
           return false;
         }
 
-        // Eğer kullanıcı veritabanında yoksa ekle
+        // Kullanıcı veritabanında yoksa yeni kullanıcı oluştur
         if (!existingUser) {
           const { error: insertError } = await supabase.from("users").insert([
             {
               email: user.email,
-              full_name: user.name,
-              avatar_url: user.image,
+              full_name: user.name || "",
+              avatar_url: user.image || "",
               is_premium: false,
               instagram_connected_accounts: [],
               youtube_connected_accounts: [],
@@ -48,20 +89,92 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
     },
-    // bir session tam olarak olusturulmadan once ona istedigim bazi seyleri ekleyebilirim
-    async session({ session }) {
+
+    // 2. session: Her sayfa yüklendiğinde ve session güncellendiğinde çalışır
+    // Kullanıcı bilgilerini session'a ekler
+    async session({ session, token }) {
       const supabase = createClient();
+
+      // token.sub jwt callback'inde eklendi.
+      if (token.sub) {
+        session.user.id = token.sub;
+      }
+
+      // Kullanıcının tüm verilerini Supabase'den çek
       const { data: userData, error } = await supabase
         .from("users")
         .select("*")
-        .eq("email", session.user.email);
-      if (userData) session.user.userData = userData;
+        .eq("email", session.user.email)
+        .single();
+
+      // Kullanıcı verilerini session'a ekle
+      if (userData) {
+        session.user.userData = userData;
+      }
+
       return session;
     },
-    // bu callback da user middlewareki route'a hit yaptiginda, user auth ise true dondur degilse false dondur demek.
+
+    // 3. jwt: JWT token oluşturulurken veya güncellenirken çalışır
+    // Token'a ekstra bilgiler ekler
+    // burdaki user, authorize'den dondurulen user bilgisi.
+    async jwt({ token, user }) {
+      // Yeni giriş yapıldığında user bilgilerini token'a ekle
+      if (user) {
+        token.sub = user.id;
+        token.email = user.email;
+      }
+      return token;
+    },
+
+    // 4. authorized: Korumalı sayfalara erişim kontrolü
+    // Her sayfa yüklendiğinde çalışır
     authorized({ auth, request }) {
-      if (auth?.user) return true;
-      return NextResponse.redirect(new URL("/", request.url));
+      // Sadece /dashboard ile başlayan URL'ler için auth kontrolü yap
+      const isOnDashboard = request.nextUrl?.pathname.startsWith("/dashboard");
+      if (isOnDashboard) {
+        if (auth?.user) return true; // Kullanıcı giriş yapmışsa izin ver
+        return false; // Yapmamışsa izin verme
+      }
+      return true; // Dashboard dışındaki sayfalara herkes erişebilir
     },
   },
+
+  // Özel sayfalar
+  pages: {
+    signIn: "/", // Giriş sayfası
+    error: "/", // Hata sayfası
+  },
+
+  // Session yapılandırması
+  session: {
+    strategy: "jwt", // Session'ları JWT ile yönet
+  },
 });
+// --- Calisma sirasi ---
+// oncelikle supabase ile giris yaparsak authorize fonksiyonu calisir. (bu fonksiyon zaten supabase'ye kayitli olan CredentialsProvider icinde. diger yerleri baglamiyor yani.)
+// zaten bu supabase ile giris yaparken action.js'te olarak yaptigimiz sey su;
+// const result = await signIn("supabase", {
+//  email,
+// password,
+//  redirect: true,
+//  callbackUrl: "/dashboard",
+//});
+
+// daha sonra bu authroize fonksiyonu icinde supabase login yapiyoruz. eger login basarili ise -oyle bir hesap varsa yani- email ve de id'yi donduruyoruz. daha sonra bu email ve id bize lazim olucak nextuath icinde islemelr yaparken. su anda supabase'nin etki alanindan ciktik. cunku ihtiyacimiz olan id ve emaili aldik.
+
+// authorize fonksiyonu eger ki GECERLI BIR KULLANICI DONERSE, hemen callbacks.signIn fonksiyonu tetiklenir. burda da kullanici databasede yoksa ekliyoruz, varsa da direkt donuyoruz.
+
+// daha sonra da jwt callback'i calisiyor ve token'a ID'yi ekliyor. bu token'i return ediyor.
+
+// daha sonra da session callback'i calisiyor ve tokendeki id'yi session'a aktariyor.
+
+//Neden böyle yapıyoruz?
+// JWT token'ı cookie'de şifrelenmiş olarak saklanıyor
+// Ama biz client tarafında useSession() hook'u ile session'a erişmek istiyoruz
+// Bu yüzden token'daki bilgileri session objesine aktarmamız gerekiyor
+// Yani:
+// Token -> Güvenli depolama için (cookie'de şifrelenmiş)
+// Session -> Kullanım için (client'ta erişilebilir)
+// Bu nedenle token'daki ID'yi session'a aktarıyoruz ki client tarafında session.user.id şeklinde erişebilelim.
+// Eğer bu aktarımı yapmazsak, client tarafında ID'ye erişemeyiz çünkü token client'ta şifrelenmiş halde.

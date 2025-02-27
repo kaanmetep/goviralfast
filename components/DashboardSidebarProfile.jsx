@@ -8,15 +8,17 @@ const DashboardSidebarProfile = async () => {
       <Link href={"/dashboard/profile"} className="w-fit">
         <div className=" flex items-center gap-2 cursor-pointer ">
           <img
-            src={session.user.image}
-            alt=""
+            src={session.user?.image || "/smileface.jpg"}
+            alt="user profil photo"
             referrerPolicy="no-referrer"
             className="size-8"
           />
 
           <div>
-            <p>{session.user.name}</p>
-            <p className="text-xs text-gray-600">Monthly Plan</p>
+            <p>{session.user.userData.full_name}</p>
+            <p className="text-xs text-gray-600">
+              {session.user.userData.is_premium ? "Monthly Plan" : "Free plan"}
+            </p>
           </div>
         </div>
       </Link>

@@ -2,22 +2,20 @@ import React from "react";
 import { FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import { auth } from "@/auth";
+import Image from "next/image";
+
 const ProfilePage = async () => {
   const session = await auth();
-  console.log(session);
   const userProfile = {
-    name: session.user.name,
-    planType: session?.user.userData[0].is_premium
-      ? "Monthly Plan"
-      : "Free Plan",
-    email: session.user.email,
-    profileImage: session.user.image,
+    name: session.user.userData.full_name,
+    planType: session.user.userData.is_premium ? "Monthly Plan" : "Free Plan",
+    email: session.user.userData.email,
+    profileImage: session.user.userData?.avatar_url,
     subscriptionDaysLeft: 18,
 
-    instagramAmount:
-      session?.user.userData[0].instagram_connected_accounts.length,
-    tiktokAmount: session?.user.userData[0].tiktok_connected_accounts.length,
-    youtubeAmount: session?.user.userData[0].youtube_connected_accounts.length,
+    instagramAmount: session.user.userData.instagram_connected_accounts?.length,
+    tiktokAmount: session.user.userData.tiktok_connected_accounts?.length,
+    youtubeAmount: session.user.userData.youtube_connected_accounts?.length,
   };
 
   return (
@@ -27,7 +25,7 @@ const ProfilePage = async () => {
         <div className="flex items-center gap-6">
           <div className="relative">
             <img
-              src={userProfile.profileImage}
+              src={userProfile?.profileImage || "/smileface.jpg"}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover"
             />
