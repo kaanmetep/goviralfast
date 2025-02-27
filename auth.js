@@ -26,16 +26,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return null;
           }
 
-          return {
-            id: credentials.id,
-            email: credentials.email,
-          };
-
           // Giriş başarılıysa, NextAuth için user objesi döndür
           // bunu dondurmek zorundayiz cunku daha sonra asagidaki session fonksiyonunda bu emaili kullanmamiz gerek. ve token.sub icinde id dondurmemiz lazim kesinlikle. cunku nextuath bu ID'yi jwt token'ina ekliycek.
           return {
-            id: user.id,
-            email: user.email,
+            id: credentials.id,
+            email: credentials.email,
           };
         } catch (error) {
           console.error("Unexpected error:", error);
@@ -127,23 +122,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
 
-    // 4. authorized: Korumalı sayfalara erişim kontrolü
-    // Her sayfa yüklendiğinde çalışır
     authorized({ auth, request }) {
-      // Sadece /dashboard ile başlayan URL'ler için auth kontrolü yap
-      const isOnDashboard = request.nextUrl?.pathname.startsWith("/dashboard");
-      if (isOnDashboard) {
-        if (auth?.user) return true; // Kullanıcı giriş yapmışsa izin ver
-        return false; // Yapmamışsa izin verme
-      }
-      return true; // Dashboard dışındaki sayfalara herkes erişebilir
+      if (auth?.user) return true;
+      request.nextUrl.pathname = "/";
+      request.nextUrl.searchParams.set("showLogin", "true");
+      return Response.redirect(request.nextUrl);
     },
-  },
-
-  // Özel sayfalar
-  pages: {
-    signIn: "/", // Giriş sayfası
-    error: "/", // Hata sayfası
   },
 
   // Session yapılandırması

@@ -1,7 +1,6 @@
 "use server";
 import { signIn, signOut } from "./auth";
 import { createClient } from "./utils/supabase/server";
-import { redirect } from "next/navigation";
 
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
@@ -24,8 +23,7 @@ export const signUpWithSupabase = async (_, formData) => {
       rePassword: formData.get("rePassword"),
       full_name: formData.get("full_name"),
     };
-    const supabase = createClient();
-
+    // check if inputs are empty.
     if (
       !rawData.email ||
       !rawData.password ||
@@ -34,19 +32,52 @@ export const signUpWithSupabase = async (_, formData) => {
     ) {
       return { message: "Please fill all the areas.", inputs: rawData };
     }
+    // check email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(rawData.email)) {
+      return {
+        message: "Please enter a valid email address.",
+        inputs: rawData,
+      };
+    }
+    if (rawData.full_name.length < 2 || rawData.full_name.length > 50) {
+      return {
+        message: "Name must be between 2 and 50 characters.",
+        inputs: rawData,
+      };
+    }
+    if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(rawData.full_name)) {
+      return {
+        message: "Name can only contain letters and spaces.",
+        inputs: rawData,
+      };
+    }
+    if (rawData.password.length < 8) {
+      return {
+        message: "Password must be at least 8 characters long.",
+        inputs: rawData,
+      };
+    }
+
     if (rawData.password !== rawData.rePassword) {
       return {
         message: "Passwords you enter does not match.",
         inputs: rawData,
       };
     }
-    // Sign up with supabase
+
+    // XSS ve injection önleme için
+    const sanitizedFullName = rawData.full_name.trim().replace(/[<>]/g, "");
+    const sanitizedEmail = rawData.email.trim().toLowerCase();
+
+    // Supabase ile kayıt
+    const supabase = createClient();
     const { data, error } = await supabase.auth.signUp({
-      email: rawData.email,
+      email: sanitizedEmail,
       password: rawData.password,
       options: {
         data: {
-          full_name: rawData.full_name,
+          full_name: sanitizedFullName,
           is_premium: false,
         },
       },
@@ -56,13 +87,13 @@ export const signUpWithSupabase = async (_, formData) => {
       console.error("Supabase signup error:", error);
       return { message: error.message, inputs: rawData };
     }
-    console.log(data);
+
     return {
       message: "You signed up successfully. Please confirm your email.",
     };
   } catch (error) {
     console.error("Signup error:", error);
-    return { message: "An error occured. Please try again later." };
+    return { message: "An error occurred. Please try again later." };
   }
 };
 export const signInWithSupabase = async (_, formData) => {
@@ -76,31 +107,56 @@ export const signInWithSupabase = async (_, formData) => {
       return { message: "Enter your e-mail and password.", inputs: rawData };
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(rawData.email)) {
+      return {
+        message: "Please enter a valid email address.",
+        inputs: rawData,
+      };
+    }
+    // XSS ve injection koruması
+    const sanitizedEmail = rawData.email.trim().toLowerCase();
+
     // Supabase ile giriş yap
     const supabase = createClient();
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: rawData.email,
+      email: sanitizedEmail,
       password: rawData.password,
     });
-    if (error?.status === 400 || !data.user) {
-      return { message: "Invalid email or password." };
+
+    if (error) {
+      if (error.status === 400) {
+        return { message: "Invalid email or password." };
+      }
+      if (error.status === 429) {
+        return { message: "Too many login attempts. Please try again later." };
+      }
+      console.error("Supabase auth error:", error);
+      return { message: "Authentication failed." };
     }
 
-    // NextAuth'a yonlendir
+    if (!data?.user) {
+      return { message: "User not found." };
+    }
+
+    // NextAuth'a yönlendir
     const res = await signIn("supabase", {
-      id: data.user.id, // NextAuth'un token'a koyacağı ID
+      id: data.user.id,
       email: data.user.email,
-      redirect: false, // Yönlendirmeyi biz yapacağız
+      redirect: false,
     });
 
     if (res?.error) {
-      return { message: "NextAuth login failed." };
+      console.error("NextAuth error:", res.error);
+      return { message: "Login failed. Please try again." };
     }
 
     return { success: true };
   } catch (error) {
-    console.log("error" + error);
-    return { message: "An unexpected error occurred." };
+    console.error("Login error:", error);
+    return {
+      message: "An unexpected error occurred. Please try again later.",
+    };
   }
 };
 export async function getDownloadUrl(link, uploadedAudio) {
@@ -137,7 +193,6 @@ export async function getDownloadUrl(link, uploadedAudio) {
           `/ac_none/l_audio:${result.public_id}/fl_layer_apply` +
           "/" +
           linkBeforeAudioOption.split("/ac_none/")[1];
-        console.log("linkBeforeAudioOption:", linkBeforeAudioOption);
       } catch (error) {
         console.error("uploading error:", error);
         throw error;
