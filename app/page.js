@@ -2,14 +2,13 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import Slider from "@/components/Slider";
 import Learn from "@/components/Learn";
-import Platforms from "@/components/Platforms";
 import VideoSection from "@/components/VideoSection";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
 import Banner from "@/components/Banner";
 import ProgressBar from "@/components/ProgressBar";
 import LoginPopup from "@/components/LoginPopup";
-
+import MasonrySection from "@/components/MasonrySection";
 export default async function Home() {
   return (
     <div>
@@ -23,8 +22,9 @@ export default async function Home() {
             <Slider />
           </div>
           <Learn />
-          <Platforms />
+          {/* <Platforms /> */}
           <VideoSection />
+          <MasonrySection />
         </main>
       </div>
 
