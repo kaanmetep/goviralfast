@@ -23,7 +23,7 @@ const LoginPopupSignIn = ({
     signingInWithSupabase,
   ] = useActionState(signInWithSupabase, signInWithSupabaseInitialState);
   useEffect(() => {
-    if (signInWithSupabaseState.success) {
+    if (signInWithSupabaseState?.success) {
       router.push("/dashboard");
     }
   }, [signInWithSupabaseState]);

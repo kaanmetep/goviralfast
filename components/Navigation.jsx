@@ -1,7 +1,7 @@
 import Button from "./Button";
 const Navigation = ({ session }) => {
   return (
-    <nav className="md:flex items-center gap-12 text-lg font-medium w-full hidden ">
+    <nav className="sm:flex items-center gap-12 text-lg font-medium w-full hidden ">
       <a href="#pricing" className="nav-link">
         Pricing
       </a>

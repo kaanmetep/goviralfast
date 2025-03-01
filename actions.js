@@ -13,7 +13,7 @@ export const signInAction = async () => {
   await signIn("google", { redirectTo: "/dashboard" });
 };
 export const signOutAction = async () => {
-  await signOut({ redirect: "/" });
+  await signOut({ redirectTo: "/" });
 };
 export const signUpWithSupabase = async (_, formData) => {
   try {

@@ -40,7 +40,7 @@ const PriceCard = ({
         </div>
       )}
 
-      <div className="flex flex-col p-8 pt-12 relative">
+      <div className="flex flex-col p-8 pt-12 w-full ">
         <div className=" h-[160px]">
           <div className="flex justify-between items-start mb-4 ">
             <div>
@@ -49,7 +49,7 @@ const PriceCard = ({
             </div>
             {recommended && (
               <Star
-                className="absolute -right-5 top-9 text-yellow-400 fill-yellow-400"
+                className="absolute right-3 top-10 text-yellow-400 fill-yellow-400"
                 size={24}
               />
             )}
@@ -99,12 +99,12 @@ const PriceCard = ({
             ))}
           </ul>
         </div>
-        <div className="mt-auto mx-auto ">
+        <div className="flex flex-col items-center mt-auto  mx-auto">
           <Button>Create Viral Videos</Button>
+          <p className="text-gray-400 text-xs mt-6 text-center">
+            * : These features are not active, but will be active very soon!
+          </p>
         </div>
-        <p className="text-gray-400 text-xs mt-6 text-center">
-          * : These features are not active, but will be active very soon!
-        </p>
       </div>
     </div>
   );

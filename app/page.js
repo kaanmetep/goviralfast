@@ -11,16 +11,14 @@ import LoginPopup from "@/components/LoginPopup";
 import MasonrySection from "@/components/MasonrySection";
 export default async function Home() {
   return (
-    <div>
+    <>
       <LoginPopup />
       <div className="flex flex-col mx-auto w-[95%]  md:w-[90%] max-w-[1500px]">
         <Header />
         <ProgressBar />
         <main>
           <HeroSection />
-          <div className="w-full  flex justify-center">
-            <Slider />
-          </div>
+          <Slider />
           <Learn />
           {/* <Platforms /> */}
           <VideoSection />
@@ -31,6 +29,6 @@ export default async function Home() {
       <Pricing />
       <Banner />
       <Footer />
-    </div>
+    </>
   );
 }

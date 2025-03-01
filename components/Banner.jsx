@@ -106,7 +106,7 @@ const Banner = () => {
   return (
     <div
       ref={bannerRef}
-      className="relative overflow-hidden bg-gradient-to-br from-white via-yellow-50 to-white py-16 px-8 rounded-2xl shadow-lg my-16 max-w-[1500px] mx-auto border border-yellow-100"
+      className="relative overflow-hidden bg-gradient-to-br from-white via-yellow-50 to-white py-16 px-8 rounded-2xl shadow-lg mt-20  mx-auto border border-yellow-100 "
     >
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-20">
