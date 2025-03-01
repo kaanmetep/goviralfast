@@ -44,11 +44,11 @@ const MasonrySection = () => {
   };
 
   return (
-    <section className="mt-20 ">
+    <section className="mt-20" aria-label="Viral Content Gallery">
       <div className="flex flex-col items-center max-w-3xl mx-auto px-4">
         <h2 className="text-center mb-3 font-semibold">
           <span className="text-gray-600 text-lg md:text-xl">
-            You don’t need thousands of followers, high-quality videos, or
+            You don't need thousands of followers, high-quality videos, or
             brand-new ideas to get millions of views
           </span>
           <span className="block mt-1 text-2xl md:text-3xl text-black">
@@ -81,7 +81,7 @@ const MasonrySection = () => {
                     src={photo.src}
                     width={500}
                     height={350}
-                    alt="gallery image"
+                    alt="Trending social media post example"
                     className="w-full h-auto object-cover transition-all duration-500 group-hover:brightness-90"
                     priority={photo.id <= 4}
                     loading={photo.id <= 4 ? "eager" : "lazy"}

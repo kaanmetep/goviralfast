@@ -104,7 +104,7 @@ const Banner = () => {
   };
 
   return (
-    <div
+    <section
       ref={bannerRef}
       className="relative overflow-hidden bg-gradient-to-br from-white via-yellow-50 to-white py-16 px-8 rounded-2xl shadow-lg mt-20  mx-auto border border-yellow-100 "
     >
@@ -154,7 +154,7 @@ const Banner = () => {
           />
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

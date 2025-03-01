@@ -25,7 +25,6 @@ export default async function Home() {
           <MasonrySection />
         </main>
       </div>
-
       <Pricing />
       <Banner />
       <Footer />

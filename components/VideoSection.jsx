@@ -1,11 +1,18 @@
 import { Crown } from "lucide-react";
+
 const VideoSection = () => {
   return (
-    <div className="mt-20 ">
+    <section id="video-demo" className="mt-20" aria-labelledby="see-in-action">
       <div className="flex justify-center">
-        <h2 className="relative text-center mb-2 text-3xl md:text-4xl w-fit z-10 font-semibold">
+        <h2
+          id="see-in-action"
+          className="relative text-center mb-2 text-3xl md:text-4xl w-fit z-10 font-semibold"
+        >
           See in action
-          <span className="absolute h-[14px] w-full bg-yellow-300/80 bottom-1 left-0 z-[-1] rounded-md"></span>
+          <span
+            className="absolute h-[14px] w-full bg-yellow-300/80 bottom-1 left-0 z-[-1] rounded-md"
+            aria-hidden="true"
+          ></span>
         </h2>
       </div>
       <p className="text-center text-base md:text-lg text-gray-800">
@@ -20,17 +27,19 @@ const VideoSection = () => {
       </div>
 
       <div className="flex justify-center mt-8 items-center">
-        <div className="flex items-center gap-8 w-full max-w-4xl aspect-video relative ">
+        <div className="flex items-center gap-8 w-full max-w-4xl aspect-video relative">
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/B46Ikf4qhqY?rel=0&modestbranding=1&showinfo=0&controls=1&fs=0
-"
-            title="YouTube video player"
-            frameBorder="0"
+            src="https://www.youtube.com/embed/B46Ikf4qhqY?rel=0&modestbranding=1&showinfo=0&controls=1&fs=0"
+            title="How to create viral videos with GoViralFast - Demo Tutorial"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            loading="lazy"
           ></iframe>
-          <div className="absolute opacity-0 pointer-events-none xl:opacity-100 xl:pointer-events-auto xl:flex flex-col justify-center items-center delay-100 transition-all  transform top-[25%] -left-[158px] ">
+          <div
+            className="absolute opacity-0 pointer-events-none xl:opacity-100 xl:pointer-events-auto xl:flex flex-col justify-center items-center delay-100 transition-all transform top-[25%] -left-[158px]"
+            aria-hidden="true"
+          >
             <div className="relative">
               <Crown className="absolute -top-[12px] -left-[17px] -rotate-45 size-4" />
               <p className="text-xs font-semibold">It only takes 46 seconds</p>
@@ -40,6 +49,7 @@ const VideoSection = () => {
               className="w-12 h-12 fill-base-content/80"
               viewBox="0 0 130 130"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
               <path
                 fillRule="evenodd"
@@ -55,7 +65,7 @@ const VideoSection = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

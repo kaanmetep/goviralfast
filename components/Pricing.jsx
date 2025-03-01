@@ -2,7 +2,11 @@ import PriceCard from "./PriceCard";
 
 const Pricing = () => {
   return (
-    <div className="py-24 mt-20 px-6 bg-gray-200/70  " id="pricing">
+    <section
+      className="py-24 mt-20 px-6 bg-gray-200/70"
+      id="pricing"
+      aria-label="Pricing Plans"
+    >
       <div className="text-center mb-16">
         <h2 className="relative text-center mb-2 text-3xl md:text-4xl w-fit z-10 font-semibold mx-auto">
           Pricing
@@ -14,21 +18,27 @@ const Pricing = () => {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div
+        className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+        itemScope
+        itemType="https://schema.org/Offer"
+      >
         <PriceCard
           type="Monthly"
           oldPrice="10"
           currentPrice="4"
           description="Ideal for creators serious about growing their presence"
           recommended={true}
+          itemProp="offers"
         />
         <PriceCard
           type="Free"
           currentPrice="0"
           description="Perfect for beginners exploring viral content creation"
+          itemProp="offers"
         />
       </div>
-    </div>
+    </section>
   );
 };
 
