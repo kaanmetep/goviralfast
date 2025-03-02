@@ -81,9 +81,10 @@ const Footer = () => {
             >
               Contact via e-mail
             </a>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 text-xs mb-4">
               I'll get back to you within 24 hours!
             </p>
+            <p className="text-gray-500 text-xs">kaan@kmpcodes.com</p>
           </div>
         </div>
       </div>

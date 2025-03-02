@@ -28,7 +28,7 @@ const DashboardSidebar = async () => {
 
         <div className=" mt-4 md:mt-auto flex flex-col items-end md:items-center absolute md:relative top-0 right-0">
           <a
-            href="mailto:kaanpmete@gmail.com"
+            href="mailto:kaan@kmpcodes.com"
             className="text-xs md:text-sm underline text-blue-700 "
           >
             Contact via e-mail

@@ -17,7 +17,7 @@ const Page = () => {
         <p className="mt-1 ">Last updated: 2025-03-01 </p>
         <p className=" mt-6">
           These Terms of Service ("Terms") govern your use of the GoViralFast
-          website at https://goviralfast.com ("Website") and the services
+          website at https://goviralfast.co ("Website") and the services
           provided by GoViralFast. By using our Website and services, you agree
           to these Terms.
         </p>
@@ -37,7 +37,7 @@ const Page = () => {
               information, and social media authentication access keys, as
               necessary to provide our services. For details on how we handle
               your data, please refer to our Privacy Policy at
-              https://goviralfast.com/privacy-policy.
+              https://goviralfast.co/privacy-policy.
             </p>
           </li>
           <li>
@@ -72,7 +72,7 @@ const Page = () => {
             <h2 className="font-medium">7. Contact Information</h2>
             <p className="mt-2">
               For any questions or concerns regarding these Terms of Service,
-              please contact us at kaanpmete@gmail.com
+              please contact us at kaan@kmpcodes.com
             </p>
           </li>
         </ul>

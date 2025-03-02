@@ -12,20 +12,20 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    // url: "https://goviralfast.com/", CHANGE HERE
+    url: "https://goviralfast.co",
     siteName: "GoViralFast",
     title: "GoViralFast - Create Viral Videos in Minutes",
     description:
       "Turn ideas into trending videos. Easy templates, fast editing, instant sharing.",
   },
-  // robots: "index, follow",
-  // canonical: "https://goviralfast.com",
-  // alternates: {
-  //   canonical: "https://goviralfast.com",
-  //   languages: {
-  //     "en-US": "https://goviralfast.com",
-  //   },
-  // }, // CHANGE HERE
+  robots: "index, follow",
+  canonical: "https://goviralfast.co",
+  alternates: {
+    canonical: "https://goviralfast.co",
+    languages: {
+      "en-US": "https://goviralfast.co",
+    },
+  },
 };
 
 const bric = Bricolage_Grotesque({

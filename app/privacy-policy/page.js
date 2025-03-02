@@ -19,7 +19,7 @@ const Page = () => {
           Thank you for using GoViralFast ("we," "us," or "our"). This Privacy
           Policy outlines how we collect, use, and protect your personal and
           non-personal information when you use our website located at
-          https://goviralfast.com (the "Website").
+          https://goviralfast.co (the "Website").
         </p>
         <p className="mt-6">
           By accessing or using the Website, you agree to the terms of this
@@ -99,7 +99,7 @@ const Page = () => {
             <h2 className="font-medium">6. Contact Information</h2>
             <p className="mt-2">
               If you have any questions, concerns, or requests related to this
-              Privacy Policy, you can contact us at: Email: kaanpmete@gmail.com
+              Privacy Policy, you can contact us at: Email: kaan@kmpcodes.com
             </p>
           </li>
           <li>
