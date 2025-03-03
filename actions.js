@@ -1,6 +1,6 @@
 "use server";
 import { signIn, signOut } from "./auth";
-import { createClient } from "./utils/supabase/server";
+import { createAdminClient } from "@/utils/supabase/server";
 
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
@@ -71,10 +71,7 @@ export const signUpWithSupabase = async (_, formData) => {
     const sanitizedEmail = rawData.email.trim().toLowerCase();
 
     // Supabase ile kayıt
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
+    const supabase = createAdminClient();
     const { data, error } = await supabase.auth.signUp({
       email: sanitizedEmail,
       password: rawData.password,
@@ -121,10 +118,7 @@ export const signInWithSupabase = async (_, formData) => {
     const sanitizedEmail = rawData.email.trim().toLowerCase();
 
     // Supabase ile giriş yap
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
+    const supabase = createAdminClient();
     const { data, error } = await supabase.auth.signInWithPassword({
       email: sanitizedEmail,
       password: rawData.password,
