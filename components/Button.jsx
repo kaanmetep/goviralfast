@@ -3,10 +3,9 @@
 import { Rocket } from "lucide-react";
 import { useAppContext } from "@/context/AppContext";
 import { useSession, getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { monthlyPlan } from "@/stripeinfo";
 
 const Button = ({ children, logo = true }) => {
-  const router = useRouter();
   const { data: session } = useSession();
   const { setSelectedOption } = useAppContext();
 
@@ -16,9 +15,13 @@ const Button = ({ children, logo = true }) => {
     } else {
       const latestSession = await getSession();
       if (latestSession) {
-        router.push("/dashboard");
-      } else {
-        setSelectedOption("signin");
+        const email = latestSession.user?.email;
+        const paymentUrl = new URL(monthlyPlan.link);
+
+        if (email) {
+          paymentUrl.searchParams.append("prefilled_email", email);
+        }
+        window.open(paymentUrl.toString(), "_blank");
       }
     }
   };

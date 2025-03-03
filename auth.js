@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { createClient } from "@/utils/supabase/server";
+import { createAdminClient } from "@/utils/supabase/server";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // Providers: Desteklenen giriş yöntemleri
@@ -44,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // 1. signIn: Kullanıcı giriş yaptığında çalışır
     async signIn({ user }) {
       try {
-        const supabase = createClient();
+        const supabase = createAdminClient();
 
         // Kullanıcının veritabanında olup olmadığını kontrol et
         const { data: existingUser, error } = await supabase
@@ -88,7 +88,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // 2. session: Her sayfa yüklendiğinde ve session güncellendiğinde çalışır
     // Kullanıcı bilgilerini session'a ekler
     async session({ session, token }) {
-      const supabase = createClient();
+      const supabase = createAdminClient();
 
       // token.sub jwt callback'inde eklendi.
       if (token.sub) {

@@ -5,7 +5,6 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-yellow-50 to-amber-100">
       <div className="w-full max-w-md px-4">
-        {/* Logo */}
         <div className="flex items-center justify-center gap-1 mb-8">
           <Rocket
             className="fill-yellow-200 size-8 sm:size-10 md:size-12"
@@ -17,7 +16,6 @@ export default function NotFound() {
           </h1>
         </div>
 
-        {/* 404 content */}
         <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl p-8 text-center">
           <h2 className="text-6xl font-bold text-yellow-500 mb-4">404</h2>
           <p className="text-xl font-medium text-yellow-800 mb-6">
@@ -35,7 +33,6 @@ export default function NotFound() {
           </Link>
         </div>
 
-        {/* Flying rockets decoration */}
         <div className="absolute top-16 left-10 opacity-20">
           <Rocket className="fill-yellow-300 size-16 rotate-45" />
         </div>
