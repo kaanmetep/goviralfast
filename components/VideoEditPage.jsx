@@ -121,7 +121,7 @@ const VideoEditPage = ({ video }) => {
       videoElement.removeEventListener("loadeddata", updateMetadata);
       videoElement.removeEventListener("canplay", updateMetadata);
     };
-  }, [video.id]);
+  }, [video?.id]);
 
   return (
     <div

@@ -1,9 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
+import { createAdminClient } from "@/utils/supabase/server";
 
 import VideoEditPage from "@/components/VideoEditPage";
 const Page = async ({ params }) => {
   const paramsId = (await params).id;
-  const supabase = createClient();
+  const supabase = createAdminClient();
   const { data: video } = await supabase
     .from("videos")
     .select("*")
