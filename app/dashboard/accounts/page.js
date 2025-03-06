@@ -1,5 +1,4 @@
 import { FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
-import { createClient } from "@/utils/supabase/server";
 import { auth } from "@/auth";
 import { X } from "lucide-react";
 const SOCIAL_ACCOUNTS = [
@@ -27,14 +26,7 @@ const SOCIAL_ACCOUNTS = [
 ];
 
 const Page = async () => {
-  const supabase = createClient();
   const session = await auth();
-  const { data: user } = await supabase
-    .from("users")
-    .select()
-    .eq("email", session.user.email)
-    .single();
-  console.log(user);
   return (
     <div className="py-6 px-4 mr-2 bg-white shadow-lg w-full rounded-md min-h-screen">
       {/* Header Section */}
@@ -58,14 +50,15 @@ const Page = async () => {
                   <button className="bg-zinc-600 hover:bg-zinc-700 transition-colors text-white px-8 py-2 rounded-md font-medium w-[240px]">
                     {account.buttonText}
                   </button>
-                  {user?.[account?.name?.toLowerCase() + "_connected_accounts"]
-                    .length === 0 && (
+                  {session?.user?.userData[
+                    account?.name?.toLowerCase() + "_connected_accounts"
+                  ].length === 0 && (
                     <p className="text-sm text-gray-500 mt-1">Not connected</p>
                   )}
                 </div>
               </div>
               <ul className="flex gap-2">
-                {user?.[
+                {session?.user?.userData?.[
                   account?.name?.toLowerCase() + "_connected_accounts"
                 ].map((account, i) => (
                   <li

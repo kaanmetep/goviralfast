@@ -2,17 +2,21 @@
 import Masonry from "react-masonry-css";
 import ViralVideo from "./ViralVideo";
 import { useState } from "react";
-
-const DashboardMain = ({ videos }) => {
-  const [sortOption, setSortOption] = useState("recentlyadded");
+import { monthlyPlan } from "@/stripeinfo";
+const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
+  const [sortOption, setSortOption] = useState("mostpopular");
   const breakpointColumns = {
-    default: 3, // Başlangıçta 3 sütun
-    1280: 3,
-    1100: 2, // 1100px altında 2 sütun
-    // 840: 2,
-    480: 1,
+    default: 5, // Başlangıçta 3 sütun
+    1600: 4,
+    1400: 3, // 1100px altında 2 sütun
+    1150: 2,
+    780: 1,
   };
-
+  const handleButtonClick = () => {
+    const paymentUrl = new URL(monthlyPlan.link);
+    paymentUrl.searchParams.append("prefilled_email", userEmail);
+    window.open(paymentUrl.toString(), "_blank");
+  };
   return (
     <div className="w-full bg-white shadow-lg pt-2 mr-2  px-2 rounded-md min-h-screen ">
       <div className="flex gap-6 items-center mb-8 mt-2 ml-1">
@@ -55,6 +59,19 @@ const DashboardMain = ({ videos }) => {
               </div>
             ))}
         </Masonry>
+        {!isUserPremium && (
+          <div className="flex flex-col items-center gap-1">
+            <p className="text-center mt-2 text-gray-600">
+              You're currently on free plan.
+            </p>
+            <p
+              className="underline cursor-pointer animate-bounce hover:no-underline transition-all delay-[50ms] mb-6"
+              onClick={handleButtonClick}
+            >
+              Get Monthly Plan Too See All Viral Videos!
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

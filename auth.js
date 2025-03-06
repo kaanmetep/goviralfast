@@ -57,7 +57,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           console.log("Error fetching user:", error);
           return false;
         }
-
         // Kullanıcı veritabanında yoksa yeni kullanıcı oluştur
         if (!existingUser) {
           const { error: insertError } = await supabase.from("users").insert([
@@ -106,7 +105,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (userData) {
         session.user.userData = userData;
       }
-
       return session;
     },
 
