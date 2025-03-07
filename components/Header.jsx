@@ -5,10 +5,20 @@ import { Rocket, Menu } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
+import { useAppContext } from "@/context/AppContext";
+import { useRouter } from "next/navigation";
 const Header = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
+  const { setSelectedOption } = useAppContext();
+  const handleLoginOrDashboardClick = () => {
+    if (!session) {
+      setSelectedOption("signin");
+    } else {
+      router.push("/dashboard");
+    }
+  };
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 30) {
@@ -42,7 +52,12 @@ const Header = () => {
         </Link>
       </div>
 
-      <Navigation isScrolled={isScrolled} session={session} />
+      <Navigation
+        isScrolled={isScrolled}
+        session={session}
+        handleLoginOrDashboardClick={handleLoginOrDashboardClick}
+      />
+
       {/* MOBILE SCREEN NAVIGATION */}
       <div className="block sm:hidden ml-auto group relative">
         <Menu className="cursor-pointer" aria-label="Open mobile menu" />
@@ -65,8 +80,13 @@ const Header = () => {
                   Learn
                 </Link>
               </li>
-              <li className="mx-auto">
-                <Button logo={false}>{session ? "Dashboard" : "Login"}</Button>
+              <li className="cursor-pointer hover:bg-gray-100 transition-all duration-150 rounded-lg mx-auto">
+                <button
+                  onClick={handleLoginOrDashboardClick}
+                  className="block px-6 py-2 text-gray-700 font-medium text-center"
+                >
+                  {session ? "Dashboard" : "Login"}
+                </button>
               </li>
             </ul>
           </div>

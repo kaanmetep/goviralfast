@@ -10,12 +10,12 @@ const DashboardSidebar = async () => {
       <div className="flex  justify-between items-center md:block">
         <Link href={"/dashboard"}>
           <div className="flex items-center gap-1 ">
-            <Rocket className="fill-yellow-200 size-5 sm:size-7 md:size-9" />
-            <h1 className="sm:text-lg md:text-xl font-semibold">GoViralFast</h1>
+            <Rocket className="fill-yellow-200 size-6 sm:size-7 md:size-9" />
+            <h1 className="text-xl font-semibold">GoViralFast</h1>
           </div>
         </Link>
         <Link href="/dashboard" className="button md:mt-6 flex items-center">
-          <Home size={22} />
+          <Home size={18} />
           <p>See All Viral Videos</p>
         </Link>
       </div>
