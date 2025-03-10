@@ -6,7 +6,5 @@ export const monthlyPlan = {
   priceId:
     process.env.NODE_ENV === "development"
       ? "price_1QzIiMGK2mnl1LsASbTiv5Cy"
-      : "price_1R0r3FGK2mnl1LsAJNpG7EwL",
+      : "price_1R0tz7GK2mnl1LsAUNIjBDli",
 };
-
-// change these links later

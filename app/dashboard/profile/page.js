@@ -6,7 +6,9 @@ import Button from "@/components/Button";
 const ProfilePage = async () => {
   const session = await auth();
   const customerPortalLink =
-    "https://billing.stripe.com/p/login/test_14k6qp3MF3kJef6aEE";
+    process.env.NODE_ENV === "development"
+      ? "https://billing.stripe.com/p/login/test_14k6qp3MF3kJef6aEE"
+      : "https://billing.stripe.com/p/login/bIY01d3ttbxb1Ak5kk";
   const userProfile = {
     name: session.user.userData.full_name,
     planType: session.user.userData.is_premium ? "Monthly Plan" : "Free Plan",
