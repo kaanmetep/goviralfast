@@ -252,7 +252,7 @@ const ProfilePage = async () => {
                           month.
                         </p>
                         <a
-                          className="text-sm mt-2 block underline hover:no-underline transition-all delay-[50ms]"
+                          className="text-sm mt-2 block underline hover:no-underline transition-all delay-[50ms] w-fit"
                           href={
                             customerPortalLink +
                             "?prefilled_email=" +
