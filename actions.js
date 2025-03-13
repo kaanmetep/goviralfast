@@ -77,7 +77,7 @@ export const signUpWithSupabase = async (_, formData) => {
       password: rawData.password,
       options: {
         data: {
-          full_name: sanitizedFullName,
+          name: sanitizedFullName,
           is_premium: false,
         },
       },
@@ -143,6 +143,7 @@ export const signInWithSupabase = async (_, formData) => {
     const res = await signIn("supabase", {
       id: data.user.id,
       email: data.user.email,
+      name: data.user.user_metadata.full_name,
       redirect: false,
     });
 

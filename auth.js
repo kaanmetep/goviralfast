@@ -27,10 +27,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
 
           // Giriş başarılıysa, NextAuth için user objesi döndür
-          // bunu dondurmek zorundayiz cunku daha sonra asagidaki session fonksiyonunda bu emaili kullanmamiz gerek. ve token.sub icinde id dondurmemiz lazim kesinlikle. cunku nextuath bu ID'yi jwt token'ina ekliycek.
+          // bunu dondurmek zorundayiz cunku asagida user objecti bu olmus olucak.
           return {
             id: credentials.id,
             email: credentials.email,
+            name: credentials.name,
           };
         } catch (error) {
           console.error("Unexpected error:", error);
@@ -45,7 +46,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user }) {
       try {
         const supabase = createAdminClient();
-
         // Kullanıcının veritabanında olup olmadığını kontrol et
         const { data: existingUser, error } = await supabase
           .from("users")
