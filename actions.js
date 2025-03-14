@@ -78,7 +78,6 @@ export const signUpWithSupabase = async (_, formData) => {
       options: {
         data: {
           name: sanitizedFullName,
-          is_premium: false,
         },
       },
     });
@@ -123,7 +122,7 @@ export const signInWithSupabase = async (_, formData) => {
       email: sanitizedEmail,
       password: rawData.password,
     });
-
+    console.log(data);
     if (error) {
       if (error.status === 400) {
         return { message: "Invalid email or password." };
@@ -138,12 +137,14 @@ export const signInWithSupabase = async (_, formData) => {
     if (!data?.user) {
       return { message: "User not found." };
     }
-
+    if (data?.user.user_metadata?.email_verified === false) {
+      return { message: "Please confirm your email first!" };
+    }
     // NextAuth'a yönlendir
     const res = await signIn("supabase", {
       id: data.user.id,
       email: data.user.email,
-      name: data.user.user_metadata.full_name,
+      name: data.user.user_metadata.name,
       redirect: false,
     });
 
