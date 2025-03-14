@@ -150,18 +150,21 @@ const VideoEditPage = ({ video }) => {
                 } break-words font-semibold text-center `}
                 style={{
                   color: editSettings.textOverlay.color,
-                  fontSize: `${editSettings.textOverlay.fontSize / 3.5}px`,
+                  fontSize: `${editSettings.textOverlay.fontSize / 3}px`,
                   backgroundColor: editSettings.textOverlay.backgroundColor,
                   left: "50%",
+                  marginTop: "35px",
                   transform: "translateX(-50%)",
                   ...(editSettings.textOverlay.position === "center"
                     ? {
                         top: "50%",
                         transform: "translate(-50%, -50%)",
+                        marginTop: 0,
                       }
                     : {
                         [editSettings.textOverlay.position]: "20px",
                         transform: "translateX(-50%)",
+                        marginBottom: "35px",
                       }),
                 }}
               >

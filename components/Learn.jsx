@@ -41,15 +41,15 @@ const Learn = () => {
       <div className="py-8 text-center">
         <h2
           id="how-it-works-heading"
-          className="relative inline-block text-4xl font-bold mb-4"
+          className="relative inline-block text-2xl md:text-3xl lg:text-4xl font-bold mb-4"
         >
           How does it work?
           <span
-            className="absolute h-3 w-full bg-yellow-300 bottom-1 left-0 -z-10 rounded-md"
+            className="absolute h-2 md:h-3 w-full bg-yellow-300 bottom-1 left-0 -z-10 rounded-md"
             aria-hidden="true"
           ></span>
         </h2>
-        <p className="text-gray-600 max-w-lg mx-auto">
+        <p className="text-sm md:text-base text-gray-600 max-w-lg mx-auto">
           Creating viral content has never been easier. Follow these four simple
           steps to skyrocket your social media presence.
         </p>
@@ -73,7 +73,7 @@ const Learn = () => {
               {/* Step number with connecting point for desktop */}
               <div className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 z-10">
                 <div
-                  className={`flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-lg border-4 border-yellow-500 text-yellow-600 font-bold text-xl`}
+                  className={`flex items-center justify-center w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-white shadow-lg border-4 border-yellow-500 text-yellow-600 font-bold text-lg md:text-xl`}
                   aria-hidden="true"
                 >
                   {step.number}
@@ -87,22 +87,26 @@ const Learn = () => {
                 }`}
               >
                 <div
-                  className={`relative bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-t-4 border-yellow-500`}
+                  className={`relative bg-white p-4 md:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-t-4 border-yellow-500`}
                 >
                   {/* Mobile number and icon */}
                   <div
-                    className={`absolute -top-5 -left-5 rotate-12 lg:hidden flex items-center justify-center w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 font-bold`}
+                    className={`absolute -top-5 -left-5 rotate-12 lg:hidden flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-yellow-100 text-yellow-600 font-bold text-sm md:text-base`}
                     aria-hidden="true"
                   >
                     {step.number}
                   </div>
 
-                  <div className="flex items-center mb-3 gap-4">
-                    <h3 className={`text-xl font-bold text-gray-800`}>
+                  <div className="flex items-center mb-2 md:mb-3 gap-2 md:gap-4">
+                    <h3
+                      className={`text-lg md:text-xl font-bold text-gray-800`}
+                    >
                       {step.title}
                     </h3>
                   </div>
-                  <p className="text-gray-600">{step.description}</p>
+                  <p className="text-sm md:text-base text-gray-600">
+                    {step.description}
+                  </p>
                 </div>
               </div>
             </li>
@@ -110,13 +114,13 @@ const Learn = () => {
         </ol>
       </div>
 
-      <div className="flex flex-col mt-8 text-center">
+      <div className="flex flex-col mt-6 md:mt-8 text-center">
         <div className="mx-auto">
           <Button aria-label="Start creating viral videos now">
             Create Viral Videos
           </Button>
         </div>
-        <p className="mt-4 text-gray-500 text-sm">
+        <p className="mt-3 md:mt-4 text-xs md:text-sm text-gray-500">
           Join thousands of creators who have already gone viral
         </p>
       </div>

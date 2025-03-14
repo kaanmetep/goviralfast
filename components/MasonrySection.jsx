@@ -32,9 +32,9 @@ const MasonrySection = () => {
   }, []);
 
   const breakpointColumns = {
-    default: 4,
-    1280: 4,
-    1100: 4,
+    default: 5,
+    1280: 5,
+    1100: 5,
     768: 3,
     480: 3,
   };

@@ -8,8 +8,8 @@ const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
   const [sortOption, setSortOption] = useState("mostpopular");
   const breakpointColumns = {
     default: 5,
-    1500: 4,
-    1400: 3,
+    1550: 4,
+    1450: 3,
     1150: 2,
     780: 1,
   };
