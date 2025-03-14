@@ -72,6 +72,18 @@ export const signUpWithSupabase = async (_, formData) => {
 
     // Supabase ile kayıt
     const supabase = createAdminClient();
+    const { data: existingUser, error: errorFindingUsers } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", sanitizedEmail)
+      .single();
+
+    if (existingUser && existingUser.provider === "supabase") {
+      return { message: "This e-mail address already in use!" };
+    }
+    if (errorFindingUsers) {
+      return { message: "An error occurred. Please try again later." };
+    }
     const { data, error } = await supabase.auth.signUp({
       email: sanitizedEmail,
       password: rawData.password,
