@@ -3,25 +3,28 @@ import Masonry from "react-masonry-css";
 import ViralVideo from "./ViralVideo";
 import { useState } from "react";
 import { monthlyPlan } from "@/stripeinfo";
+
 const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
   const [sortOption, setSortOption] = useState("mostpopular");
   const breakpointColumns = {
-    default: 5, // Başlangıçta 3 sütun
-    1600: 4,
-    1400: 3, // 1100px altında 2 sütun
+    default: 5,
+    1500: 4,
+    1400: 3,
     1150: 2,
     780: 1,
   };
+
   const handleButtonClick = () => {
     const paymentUrl = new URL(monthlyPlan.link);
     paymentUrl.searchParams.append("prefilled_email", userEmail);
     window.open(paymentUrl.toString(), "_blank");
   };
+
   return (
-    <div className="w-full bg-white shadow-lg pt-2 mr-2  px-2 rounded-md min-h-screen ">
-      <div className="flex gap-6 items-center mb-8 mt-2 ml-1">
+    <div className="w-full bg-white shadow-lg pt-2 px-2 rounded-md min-h-screen overflow-hidden">
+      <div className="flex flex-wrap gap-6 items-center mb-8 mt-2 ml-1">
         <p className="text-gray-600 text-sm">Filter</p>
-        <ul className="flex items-center gap-4">
+        <ul className="flex flex-wrap items-center gap-4">
           {["Most Popular", "Recently Added"].map((option) => (
             <li
               key={option}
@@ -39,12 +42,12 @@ const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
           ))}
         </ul>
       </div>
-      <div className="w-fit px-4 sm:px-2">
-        {/* Masonry bileşeni */}
+      <div className="w-full max-w-full">
+        {/* Masonry component */}
         <Masonry
           breakpointCols={breakpointColumns}
-          className="flex gap-6"
-          columnClassName="masonry-column"
+          className="flex w-auto"
+          columnClassName="masonry-column pl-0 pr-6"
         >
           {videos
             .slice()

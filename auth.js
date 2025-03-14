@@ -32,6 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             id: credentials.id,
             email: credentials.email,
             name: credentials.name,
+            provider: "supabase",
           };
         } catch (error) {
           console.error("Unexpected error:", error);
@@ -45,6 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // 1. signIn: Kullanıcı giriş yaptığında çalışır
     async signIn({ user }) {
       try {
+        console.log(user);
         const supabase = createAdminClient();
         // Kullanıcının veritabanında olup olmadığını kontrol et
         const { data: existingUser, error } = await supabase
@@ -65,6 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               full_name: user.name || "",
               avatar_url: user.image || "",
               is_premium: false,
+              provider: user.provider === "supabase" ? "supabase" : "google",
               instagram_connected_accounts: [],
               youtube_connected_accounts: [],
               tiktok_connected_accounts: [],
