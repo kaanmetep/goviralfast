@@ -146,7 +146,7 @@ const VideoEditPage = ({ video }) => {
             {editSettings.textOverlay.text && (
               <span
                 className={`absolute text-white  ${
-                  videoType === "wideVideo" ? "w-[450px]" : "w-[215px]"
+                  videoType === "wideVideo" ? "w-[500px]" : "w-[300px]"
                 } break-words font-semibold text-center `}
                 style={{
                   color: editSettings.textOverlay.color,

@@ -24,8 +24,7 @@ export const modifyUrl = (url, editSettings, videoType, uploadedAudio) => {
     textOverlay && textOverlay.backgroundColor?.replace("#", "");
 
   const fontSize = textOverlay.fontSize;
-  const width = videoType === "tallVideo" ? "850" : "1700";
-  console.log(width);
+  const width = videoType === "tallVideo" ? "950" : "1700";
   let gravity = "north";
   let yOffset = ",y_150";
 
