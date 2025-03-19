@@ -8,8 +8,8 @@ const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
   const [sortOption, setSortOption] = useState("mostpopular");
   const breakpointColumns = {
     default: 5,
-    1550: 4,
-    1450: 3,
+    1750: 4,
+    1550: 3,
     1150: 2,
     780: 1,
   };
@@ -21,7 +21,7 @@ const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
   };
 
   return (
-    <div className="w-full bg-white shadow-lg pt-2 px-2 rounded-md min-h-screen overflow-hidden">
+    <div className="w-full bg-white shadow-lg pt-2 px-2 rounded-md min-h-screen overflow-x-hidden">
       <div className="flex flex-wrap gap-6 items-center mb-8 mt-2 ml-1">
         <p className="text-gray-600 text-sm">Filter</p>
         <ul className="flex flex-wrap items-center gap-4">
@@ -42,12 +42,27 @@ const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
           ))}
         </ul>
       </div>
-      <div className="w-full max-w-full">
-        {/* Masonry component */}
+
+      {/* Custom CSS to fix masonry layout */}
+      <style jsx global>{`
+        .my-masonry-grid {
+          display: flex;
+          width: 100%;
+          margin-left: 0;
+          box-sizing: border-box;
+        }
+        .my-masonry-grid_column {
+          padding-right: 16px;
+          background-clip: padding-box;
+          box-sizing: border-box;
+        }
+      `}</style>
+
+      <div className="w-full" style={{ overflowX: "hidden", maxWidth: "100%" }}>
         <Masonry
           breakpointCols={breakpointColumns}
-          className="flex w-auto"
-          columnClassName="masonry-column pl-0 pr-6"
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
         >
           {videos
             .slice()
@@ -62,6 +77,7 @@ const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
               </div>
             ))}
         </Masonry>
+
         {!isUserPremium && (
           <div className="flex flex-col items-center gap-1">
             <p className="text-center mt-2 text-gray-600">
@@ -71,7 +87,7 @@ const DashboardMain = ({ videos, isUserPremium, userEmail }) => {
               className="underline cursor-pointer animate-bounce hover:no-underline transition-all delay-[50ms] mb-6"
               onClick={handleButtonClick}
             >
-              Get Monthly Plan Too See All Viral Videos!
+              Get Monthly Plan To See All Viral Videos!
             </p>
           </div>
         )}
